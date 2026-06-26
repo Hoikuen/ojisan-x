@@ -14,6 +14,31 @@
 
 ---
 
+## 0. Codexへの渡し方・出力先（最初に読む）
+
+### 保存先（種類で違う・重要）
+| 種類 | 保存先 | 理由 |
+|---|---|---|
+| **キャラの緑シート**（敵・ボス・弾・FX） | `public/assets/sprites/raw_generated/` | 緑のまま。**まだ最終フォルダに入れない**。Claude側が緑抜き＆分割して `extracted_v2/` へ移す |
+| **背景・タイトル**（不透明1枚絵） | `public/assets/sprites/background/`（`floor1.png`等） | 加工不要。そのまま配置＝今マップ等が出てる場所でOK |
+
+⚠️ 緑シートを `extracted_v2/` に直接入れると、緑背景の8枚並び画像が1キャラとして表示され壊れる。必ず `raw_generated/` へ。
+
+### Codexにそのまま渡す指示（MDを自動で順に処理させる）
+```
+このリポジトリの docs/ORDER_PROMPTS_CODEX.md を読み、P0→P1→P2の順に各イラストを生成してください。
+- キャラの緑スクリーンシートは public/assets/sprites/raw_generated/ に「キャラ名_sheet.png」で保存
+- 背景の不透明1枚絵は public/assets/sprites/background/ に指定ファイル名で保存
+- 主人公(player_*)はスキップ（別途Antigravityで作る）
+- 1枚ごとに、生成したファイル名と対応するマニフェスト項目を報告
+- 緑が濁る/シートが崩れる時は、そのキャラを「1ポーズ1画像」に分けて生成し直す
+```
+> 補足：抽出まで自動化したい場合は、`_starter-kit/pipeline/extract_sheet.py` をこのリポジトリにコピーし、
+> 「raw_generated の緑シートを extract_sheet.py で extracted_v2/<キャラ> へ展開して」と続けて指示する。
+> 不安なら緑シートまでCodex／抽出はClaude、の分担が安全（コマ数や足元ズレを目視確認できる）。
+
+---
+
 ## 共通スタイル（各プロンプト末尾に自動で入れてある定型）
 ```
 Style: cute retro 16-bit pixel-art game sprite, bold dark outlines, flat cel shading, vibrant colors.
