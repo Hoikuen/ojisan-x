@@ -9,7 +9,7 @@ const HR = PLAYER.bodyRatioH;
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
-    super(scene, x, y, 'playerIdle');
+    super(scene, x, y, 'playerIdle1');
     scene.add.existing(this);
     scene.physics.add.existing(this);
     this.setCollideWorldBounds(true);
@@ -61,12 +61,17 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   applyVisual() {
-    // アニメ定義がある状態（歩き等）はアニメ再生。ハゲ化中は専用アニメ無しなので静止画。
-    const anim = this.powered ? null : PLAYER_ANIMS[this.state];
+    // しゃがみ系は表示高さを縮めて低く見せる（足元は維持される）
+    const dh = (this.state === 'crouch' || this.state === 'crouchAttack')
+      ? Math.round(H * PLAYER.crouchHeightFactor) : H;
+    // 状態にアニメ定義があり、コマが揃っていればアニメ再生。無ければ静止画にフォールバック。
+    // 通常版=PLAYER_ANIMS.normal / ハゲ化版=PLAYER_ANIMS.bald を参照（どちらも未定義なら静止画）。
+    const animSet = this.powered ? PLAYER_ANIMS.bald : PLAYER_ANIMS.normal;
+    const anim = animSet && animSet[this.state];
     if (anim && this.scene.anims.exists(anim.key)) {
       if (!this.anims.isPlaying || this.anims.currentAnim.key !== anim.key) {
         // 先頭コマでサイズ・足元を確定してからアニメ再生（全コマ同サイズ前提で足元維持）
-        swapTexture(this, anim.frames[0], H, WR, HR);
+        swapTexture(this, anim.frames[0], dh, WR, HR);
         this.play(anim.key, true);
       }
       this.setFlipX(this.facing < 0);
@@ -74,9 +79,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
     this.anims.stop(); // 静止状態に戻すときはアニメを止める
     const key = this.texSet[this.state] || this.texSet.idle;
-    // しゃがみ系は表示高さを縮めて低く見せる（足元は維持される）
-    const dh = (this.state === 'crouch' || this.state === 'crouchAttack')
-      ? Math.round(H * PLAYER.crouchHeightFactor) : H;
     swapTexture(this, key, dh, WR, HR);
     this.setFlipX(this.facing < 0);
   }

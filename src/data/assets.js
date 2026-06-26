@@ -5,32 +5,64 @@
 const S = 'assets/sprites';
 
 export const IMAGES = {
-  // 主人公（通常）
-  playerIdle: `${S}/extracted_v2/player_ojisan/idle.png`,
-  playerWalk: `${S}/extracted_v2/player_ojisan/walk.png`,
-  playerPunch: `${S}/extracted_v2/player_ojisan/attack.png`,
-  playerKick: `${S}/extracted_v2/player_ojisan/kick.png`,
-  playerCrouch: `${S}/extracted_v2/player_ojisan/crouch.png`,
-  playerCrouchAttack: `${S}/extracted_v2/player_ojisan/crouch_attack.png`,
-  playerJump: `${S}/extracted_v2/player_ojisan/jump.png`,
-  playerFall: `${S}/extracted_v2/player_ojisan/fall.png`,
-  // 歩行アニメ用フレーム（複数コマ。差し替えで本物の歩きに）
+  // ── 主人公（通常）アニメコマ ───────────────────────────────
+  // 命名規則：動くポーズは連番(_1始まり)、1コマだけの動きは番号なし。
+  // ★差し替え：public配下の同名PNGを上書きするだけ。コマを増減したい時は
+  //   こことPLAYER_ANIMSのframes配列を合わせるだけで自動でアニメ化する（RESKIN.md）。
+  // idle（待機・2コマ：呼吸）
+  playerIdle1: `${S}/extracted_v2/player_ojisan/idle_1.png`,
+  playerIdle2: `${S}/extracted_v2/player_ojisan/idle_2.png`,
+  // walk（歩行・4コマ）
   playerWalk1: `${S}/extracted_v2/player_ojisan/walk_1.png`,
   playerWalk2: `${S}/extracted_v2/player_ojisan/walk_2.png`,
   playerWalk3: `${S}/extracted_v2/player_ojisan/walk_3.png`,
   playerWalk4: `${S}/extracted_v2/player_ojisan/walk_4.png`,
-  playerJumpAttack: `${S}/extracted_v2/player_ojisan/jump_attack.png`,
-  playerHurt: `${S}/extracted_v2/player_ojisan/hurt.png`,
-  playerGrabbed: `${S}/extracted_v2/player_ojisan/grabbed.png`,
-  playerDeath: `${S}/extracted_v2/player_ojisan/death.png`,
-  // 主人公（ハゲ化）
-  baldIdle: `${S}/extracted_v2/player_bald/idle.png`,
-  baldWalk: `${S}/extracted_v2/player_bald/walk.png`,
-  baldPunch: `${S}/extracted_v2/player_bald/attack.png`,
-  baldKick: `${S}/extracted_v2/player_bald/kick.png`,
+  // punch（殴り・3コマ：引き→当て→戻し）
+  playerPunch1: `${S}/extracted_v2/player_ojisan/punch_1.png`,
+  playerPunch2: `${S}/extracted_v2/player_ojisan/punch_2.png`,
+  playerPunch3: `${S}/extracted_v2/player_ojisan/punch_3.png`,
+  // kick（蹴り・3コマ）
+  playerKick1: `${S}/extracted_v2/player_ojisan/kick_1.png`,
+  playerKick2: `${S}/extracted_v2/player_ojisan/kick_2.png`,
+  playerKick3: `${S}/extracted_v2/player_ojisan/kick_3.png`,
+  // crouch（しゃがみ・2コマ）
+  playerCrouch1: `${S}/extracted_v2/player_ojisan/crouch_1.png`,
+  playerCrouch2: `${S}/extracted_v2/player_ojisan/crouch_2.png`,
+  // crouch_attack（しゃがみ攻撃・3コマ）
+  playerCrouchAtk1: `${S}/extracted_v2/player_ojisan/crouch_attack_1.png`,
+  playerCrouchAtk2: `${S}/extracted_v2/player_ojisan/crouch_attack_2.png`,
+  playerCrouchAtk3: `${S}/extracted_v2/player_ojisan/crouch_attack_3.png`,
+  // jump / fall（各1コマ）
+  playerJump: `${S}/extracted_v2/player_ojisan/jump.png`,
+  playerFall: `${S}/extracted_v2/player_ojisan/fall.png`,
+  // jump_attack（空中攻撃・2コマ）
+  playerJumpAtk1: `${S}/extracted_v2/player_ojisan/jump_attack_1.png`,
+  playerJumpAtk2: `${S}/extracted_v2/player_ojisan/jump_attack_2.png`,
+  // grabbed（つかまれ・2コマ：もがき）
+  playerGrabbed1: `${S}/extracted_v2/player_ojisan/grabbed_1.png`,
+  playerGrabbed2: `${S}/extracted_v2/player_ojisan/grabbed_2.png`,
+  // hurt（被弾・2コマ）
+  playerHurt1: `${S}/extracted_v2/player_ojisan/hurt_1.png`,
+  playerHurt2: `${S}/extracted_v2/player_ojisan/hurt_2.png`,
+  // death（やられ・3コマ：のけぞり→倒れ→ダウン）
+  playerDeath1: `${S}/extracted_v2/player_ojisan/death_1.png`,
+  playerDeath2: `${S}/extracted_v2/player_ojisan/death_2.png`,
+  playerDeath3: `${S}/extracted_v2/player_ojisan/death_3.png`,
+  // ── 主人公（ハゲ化＝パワーアップ）アニメコマ ─────────────────
+  baldIdle1: `${S}/extracted_v2/player_bald/idle_1.png`,
+  baldIdle2: `${S}/extracted_v2/player_bald/idle_2.png`,
+  baldWalk1: `${S}/extracted_v2/player_bald/walk_1.png`,
+  baldWalk2: `${S}/extracted_v2/player_bald/walk_2.png`,
+  baldWalk3: `${S}/extracted_v2/player_bald/walk_3.png`,
+  baldWalk4: `${S}/extracted_v2/player_bald/walk_4.png`,
+  baldPunch1: `${S}/extracted_v2/player_bald/punch_1.png`,
+  baldPunch2: `${S}/extracted_v2/player_bald/punch_2.png`,
+  baldKick1: `${S}/extracted_v2/player_bald/kick_1.png`,
+  baldKick2: `${S}/extracted_v2/player_bald/kick_2.png`,
   baldJump: `${S}/extracted_v2/player_bald/jump.png`,
   baldFall: `${S}/extracted_v2/player_bald/fall.png`,
-  baldHurt: `${S}/extracted_v2/player_bald/hurt.png`,
+  baldHurt1: `${S}/extracted_v2/player_bald/hurt_1.png`,
+  baldHurt2: `${S}/extracted_v2/player_bald/hurt_2.png`,
   // 敵：ハグ魔
   hugIdle: `${S}/extracted_v2/hug/idle.png`,
   hugWalk: `${S}/extracted_v2/hug/walk.png`,
@@ -109,29 +141,49 @@ export const IMAGES = {
   bgFloor1: `${S}/background/floor1.png`,
 };
 
-// 状態→テクスチャキー（プレイヤーの見た目解決に使う）
+// 状態→テクスチャキー（静止画フォールバック）。
+// アニメ(PLAYER_ANIMS)のコマが2枚未満しか無い状態だけ、ここの1枚絵が使われる。
+// 各stateはアニメの先頭コマを指す（コマが1枚も無くても必ず表示できる）。
 export const PLAYER_TEX = {
   normal: {
-    idle: 'playerIdle', walk: 'playerWalk', jump: 'playerJump', fall: 'playerFall',
-    crouch: 'playerCrouch', punch: 'playerPunch', kick: 'playerKick',
-    crouchAttack: 'playerCrouchAttack', jumpAttack: 'playerJumpAttack',
-    grabbed: 'playerGrabbed', hurt: 'playerHurt', dead: 'playerDeath',
+    idle: 'playerIdle1', walk: 'playerWalk1', jump: 'playerJump', fall: 'playerFall',
+    crouch: 'playerCrouch1', punch: 'playerPunch1', kick: 'playerKick1',
+    crouchAttack: 'playerCrouchAtk1', jumpAttack: 'playerJumpAtk1',
+    grabbed: 'playerGrabbed1', hurt: 'playerHurt1', dead: 'playerDeath1',
   },
   bald: {
-    idle: 'baldIdle', walk: 'baldWalk', jump: 'baldJump', fall: 'baldFall',
-    crouch: 'baldIdle', punch: 'baldPunch', kick: 'baldKick',
-    crouchAttack: 'baldPunch', jumpAttack: 'baldKick',
-    grabbed: 'baldHurt', hurt: 'baldHurt', dead: 'baldHurt',
+    idle: 'baldIdle1', walk: 'baldWalk1', jump: 'baldJump', fall: 'baldFall',
+    crouch: 'baldIdle1', punch: 'baldPunch1', kick: 'baldKick1',
+    crouchAttack: 'baldPunch1', jumpAttack: 'baldKick1',
+    grabbed: 'baldHurt1', hurt: 'baldHurt1', dead: 'baldHurt1',
   },
 };
 
-// 状態→アニメーション定義（複数コマで動かす状態だけ書く）。
+// 状態→アニメーション定義（通常版 normal / ハゲ化版 bald の2セット）。
 // frames が2枚以上ロードできていれば BootScene がアニメを生成し、Player が再生する。
-// 1枚しか無い状態は PLAYER_TEX の静止画にフォールバック。
-// ★別キャラに差し替える時：同名のコマ画像（walk_1..4 等）を置けば、そのまま動く。
-//   アニメさせたい動きを増やしたい場合はここに状態を追加してコマ画像を用意するだけ。
+// 揃わない状態は PLAYER_TEX の静止画に自動フォールバック（1枚でも必ず動く）。
+// repeat:-1=ループ（待機/歩行/もがき）、repeat:0=ワンショット（攻撃/被弾/やられ）。
+// ★リスキン/コマ追加：同名の連番PNGを置いて frames を増減するだけ。コード変更不要（RESKIN.md）。
 export const PLAYER_ANIMS = {
-  walk: { key: 'anim_player_walk',
-          frames: ['playerWalk1', 'playerWalk2', 'playerWalk3', 'playerWalk4'],
-          frameRate: 8, repeat: -1 },
+  normal: {
+    idle:         { key: 'anim_pn_idle',  frames: ['playerIdle1', 'playerIdle2'], frameRate: 3, repeat: -1 },
+    walk:         { key: 'anim_pn_walk',  frames: ['playerWalk1', 'playerWalk2', 'playerWalk3', 'playerWalk4'], frameRate: 8, repeat: -1 },
+    punch:        { key: 'anim_pn_punch', frames: ['playerPunch1', 'playerPunch2', 'playerPunch3'], frameRate: 20, repeat: 0 },
+    kick:         { key: 'anim_pn_kick',  frames: ['playerKick1', 'playerKick2', 'playerKick3'], frameRate: 20, repeat: 0 },
+    crouch:       { key: 'anim_pn_crch',  frames: ['playerCrouch1', 'playerCrouch2'], frameRate: 4, repeat: -1 },
+    crouchAttack: { key: 'anim_pn_catk',  frames: ['playerCrouchAtk1', 'playerCrouchAtk2', 'playerCrouchAtk3'], frameRate: 20, repeat: 0 },
+    jumpAttack:   { key: 'anim_pn_jatk',  frames: ['playerJumpAtk1', 'playerJumpAtk2'], frameRate: 16, repeat: 0 },
+    grabbed:      { key: 'anim_pn_grab',  frames: ['playerGrabbed1', 'playerGrabbed2'], frameRate: 6, repeat: -1 },
+    hurt:         { key: 'anim_pn_hurt',  frames: ['playerHurt1', 'playerHurt2'], frameRate: 12, repeat: 0 },
+    dead:         { key: 'anim_pn_dead',  frames: ['playerDeath1', 'playerDeath2', 'playerDeath3'], frameRate: 10, repeat: 0 },
+    // jump / fall は1コマ運用 → 静止画（PLAYER_TEX）で表示
+  },
+  bald: {
+    idle:  { key: 'anim_pb_idle',  frames: ['baldIdle1', 'baldIdle2'], frameRate: 4, repeat: -1 },
+    walk:  { key: 'anim_pb_walk',  frames: ['baldWalk1', 'baldWalk2', 'baldWalk3', 'baldWalk4'], frameRate: 9, repeat: -1 },
+    punch: { key: 'anim_pb_punch', frames: ['baldPunch1', 'baldPunch2'], frameRate: 20, repeat: 0 },
+    kick:  { key: 'anim_pb_kick',  frames: ['baldKick1', 'baldKick2'], frameRate: 20, repeat: 0 },
+    hurt:  { key: 'anim_pb_hurt',  frames: ['baldHurt1', 'baldHurt2'], frameRate: 12, repeat: 0 },
+    // crouch/jumpAttack/grabbed/dead は bald 用アニメ無し → PLAYER_TEX.bald の静止画にフォールバック
+  },
 };

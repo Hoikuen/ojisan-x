@@ -101,21 +101,66 @@ def bg_placeholder(path, w, h, top, bottom, label):
 
 P = lambda *a: os.path.join(DST, *a)
 
-# 主人公の新規ポーズ（実物が来るまで既存をコピーして仮置き＝パスを用意）
-po = P("extracted_v2", "player_ojisan")
-copies = [("attack.png","kick.png"), ("extra.png","crouch.png"), ("extra.png","crouch_attack.png"),
-          ("jump.png","jump_attack.png"), ("hurt.png","grabbed.png"), ("hurt.png","death.png")]
-for src, dst in copies:
-    sp = os.path.join(po, src)
-    if os.path.isfile(sp):
-        shutil.copy(sp, os.path.join(po, dst)); print(f"temp pose {dst} <- {src}")
+# ── 主人公スプライト：フルアニメ用の連番コマを用意（合計42枚） ──────────
+# assets.js / PLAYER_ANIMS と1:1で対応。実画像が来たら同名PNGを上書きするだけ。
+# プレースホルダは「既存の代表絵があればそれを各コマに複製」、無ければ人型を生成。
+# 各コマ右上にコマ番号バッジを焼くので、アニメが再生されているか目視確認できる。
+def _frame_badge(img, idx, total):
+    """コマ番号バッジを右上に焼く（差し替えで消えるので害なし。再生確認用）。"""
+    d = ImageDraw.Draw(img)
+    w, h = img.size
+    try:
+        font = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", max(16, w // 8))
+    except Exception:
+        font = ImageFont.load_default()
+    txt = f"{idx}/{total}"
+    bw, bh = int(w * 0.30), int(h * 0.10)
+    d.rectangle([w - bw - 4, 4, w - 4, 4 + bh], fill=(0, 0, 0, 180))
+    d.text((w - bw, 6), txt, fill=(255, 230, 80, 255), font=font)
 
-# ハゲ化の不足ポーズ（baldの既存からコピー仮置き）
+def make_frames(folder, base, total, src_png, color, label):
+    """folder/base_1.png ... base_N.png を total枚生成。
+    src_png（代表絵）があれば複製、無ければ人型プレースホルダを生成。total==1なら base.png。"""
+    ensure(folder)
+    src_path = os.path.join(folder, src_png) if src_png else None
+    have_src = src_path and os.path.isfile(src_path)
+    for i in range(1, total + 1):
+        name = f"{base}.png" if total == 1 else f"{base}_{i}.png"
+        out = os.path.join(folder, name)
+        if have_src:
+            im = Image.open(src_path).convert("RGBA").copy()
+        else:
+            char_placeholder(out, 200, 380, color, f"{label}\n{base}")
+            im = Image.open(out).convert("RGBA")
+        if total > 1:
+            _frame_badge(im, i, total)
+        im.save(out)
+    print(f"frames {os.path.relpath(folder, ROOT)}/{base} x{total}"
+          + (f" <- {src_png}" if have_src else " (generated)"))
+
+PLAYER_COL = (70, 110, 170, 255)
+po = P("extracted_v2", "player_ojisan")
+# (base, コマ数, 代表絵として複製したい既存png)  ※既存が無ければ人型を生成
+OJISAN_FRAMES = [
+    ("idle", 2, "idle.png"),     ("walk", 4, "walk_1.png"),
+    ("punch", 3, "attack.png"),  ("kick", 3, "kick.png"),
+    ("crouch", 2, "crouch.png"), ("crouch_attack", 3, "crouch_attack.png"),
+    ("jump", 1, "jump.png"),     ("fall", 1, "fall.png"),
+    ("jump_attack", 2, "jump_attack.png"),
+    ("grabbed", 2, "grabbed.png"), ("hurt", 2, "hurt.png"), ("death", 3, "death.png"),
+]
+for base, n, src in OJISAN_FRAMES:
+    make_frames(po, base, n, src, PLAYER_COL, "OJISAN")
+
+BALD_COL = (190, 80, 60, 255)
 pb = P("extracted_v2", "player_bald")
-for src, dst in [("attack.png","kick.png"), ("idle.png","jump.png"), ("idle.png","fall.png"), ("idle.png","hurt.png")]:
-    sp = os.path.join(pb, src)
-    if os.path.isfile(sp):
-        shutil.copy(sp, os.path.join(pb, dst)); print(f"temp bald pose {dst} <- {src}")
+BALD_FRAMES = [
+    ("idle", 2, "idle.png"), ("walk", 4, "walk.png"),
+    ("punch", 2, "attack.png"), ("kick", 2, "kick.png"),
+    ("jump", 1, "jump.png"), ("fall", 1, "fall.png"), ("hurt", 2, "hurt.png"),
+]
+for base, n, src in BALD_FRAMES:
+    make_frames(pb, base, n, src, BALD_COL, "BALD")
 
 # ハグ魔（紫系）
 HUG = (150, 90, 180, 255)

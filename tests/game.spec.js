@@ -131,7 +131,61 @@ test('歩行アニメ：→で歩くと walk アニメが再生される', async
   await page.keyboard.up('ArrowRight');
   expect(a.state).toBe('walk');
   expect(a.playing).toBe(true);                 // アニメ再生中
-  expect(a.key).toBe('anim_player_walk');       // 歩行アニメ
+  expect(a.key).toBe('anim_pn_walk');           // 通常版・歩行アニメ
+});
+
+test('待機アニメ：立ち止まると idle アニメ(2コマ)が再生される', async ({ page }) => {
+  await startGame(page);
+  await page.waitForTimeout(200);
+  const a = await page.evaluate(() => {
+    const p = window.__game.scene.getScene('GameScene').player;
+    return { state: p.state, key: p.anims.currentAnim ? p.anims.currentAnim.key : null };
+  });
+  expect(a.state).toBe('idle');
+  expect(a.key).toBe('anim_pn_idle');
+});
+
+test('攻撃アニメ：パンチでワンショット punch アニメ(repeat:0)が再生される', async ({ page }) => {
+  await startGame(page);
+  await tapKey(page, 'KeyZ');
+  const a = await page.evaluate(() => {
+    const gs = window.__game.scene.getScene('GameScene');
+    const p = gs.player;
+    return {
+      state: p.state,
+      key: p.anims.currentAnim ? p.anims.currentAnim.key : null,
+      repeat: gs.anims.exists('anim_pn_punch') ? gs.anims.get('anim_pn_punch').repeat : null,
+    };
+  });
+  expect(a.state).toBe('punch');
+  expect(a.key).toBe('anim_pn_punch');
+  expect(a.repeat).toBe(0);                     // ワンショット（攻撃は1回再生）
+});
+
+test('全アニメ生成：通常10種＋ハゲ化5種のアニメが揃って作られている', async ({ page }) => {
+  await startGame(page);
+  const got = await page.evaluate(() => {
+    const an = window.__game.scene.getScene('GameScene').anims;
+    const keys = ['anim_pn_idle','anim_pn_walk','anim_pn_punch','anim_pn_kick','anim_pn_crch',
+      'anim_pn_catk','anim_pn_jatk','anim_pn_grab','anim_pn_hurt','anim_pn_dead',
+      'anim_pb_idle','anim_pb_walk','anim_pb_punch','anim_pb_kick','anim_pb_hurt'];
+    return keys.filter((k) => an.exists(k));
+  });
+  expect(got).toHaveLength(15);                 // 全アニメがコマ揃いで生成済み
+});
+
+test('ハゲ化アニメ：パワーアップ後も歩くと bald walk アニメになる', async ({ page }) => {
+  await startGame(page);
+  await page.evaluate(() => window.__game.scene.getScene('GameScene').player.powerUp());
+  await page.keyboard.down('ArrowRight');
+  await page.waitForTimeout(200);
+  const a = await page.evaluate(() => {
+    const p = window.__game.scene.getScene('GameScene').player;
+    return { powered: p.powered, key: p.anims.currentAnim ? p.anims.currentAnim.key : null };
+  });
+  await page.keyboard.up('ArrowRight');
+  expect(a.powered).toBe(true);
+  expect(a.key).toBe('anim_pb_walk');           // ハゲ化版の歩行アニメに切替
 });
 
 test('ハゲ化：パワーアップ後の攻撃でビームが出る', async ({ page }) => {

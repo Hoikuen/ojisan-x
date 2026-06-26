@@ -23,16 +23,19 @@ export class BootScene extends Phaser.Scene {
   }
 
   create() {
-    // アニメ生成（全コマがロードできているものだけ。コマが揃わなければ静止画フォールバック）
-    for (const cfg of Object.values(PLAYER_ANIMS)) {
-      const frames = cfg.frames.filter((k) => this.textures.exists(k));
-      if (frames.length >= 2 && !this.anims.exists(cfg.key)) {
-        this.anims.create({
-          key: cfg.key,
-          frames: frames.map((k) => ({ key: k })),
-          frameRate: cfg.frameRate,
-          repeat: cfg.repeat,
-        });
+    // アニメ生成（normal/baldの2セット）。全コマがロードできているものだけ作る。
+    // コマが2枚未満の状態はアニメを作らず、Player側が静止画にフォールバックする。
+    for (const set of Object.values(PLAYER_ANIMS)) {
+      for (const cfg of Object.values(set)) {
+        const frames = cfg.frames.filter((k) => this.textures.exists(k));
+        if (frames.length >= 2 && !this.anims.exists(cfg.key)) {
+          this.anims.create({
+            key: cfg.key,
+            frames: frames.map((k) => ({ key: k })),
+            frameRate: cfg.frameRate,
+            repeat: cfg.repeat,
+          });
+        }
       }
     }
     this.scene.start('TitleScene');
