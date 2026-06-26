@@ -30,9 +30,12 @@
 
 - アニメさせたい動きは **連番**で複数枚生成：`<キャラ>_walk_1` `_walk_2` `_walk_3` `_walk_4`（2〜4枚でOK）。
 - `extract_raw.py` が連番を検出し、**全コマを共通キャンバス（同サイズ・足元揃え）に整列**して出力（足元がブレない）。
-- `src/data/assets.js` の `PLAYER_ANIMS` に状態とフレームキーを登録（walkは登録済み）。
-  他の動き（攻撃・待機の微動など）をアニメ化したい時はここに追加し、コマ画像を用意するだけ。
-- コマが1枚しか無ければ自動で静止画にフォールバック（壊れない）。
+- `src/data/assets.js` の `PLAYER_ANIMS` は **`normal`（通常版）と `bald`（パワーアップ版）の2セット**で、
+  全ポーズ（idle/walk/punch/kick/crouch/crouch_attack/jump_attack/grabbed/hurt/death）が登録済み。
+  各定義は `repeat:-1`=ループ（待機/歩行/もがき）、`repeat:0`=ワンショット（攻撃/被弾/やられ）。
+  コマ数を増減したい時は `frames` 配列を足し引きするだけ（`BootScene` が起動時に自動でアニメ生成）。
+- **コマが2枚未満の状態は自動で静止画（`PLAYER_TEX`）にフォールバック**（1枚でも必ず動く・壊れない）。
+- 主人公スプライトの完全な発注リスト（通常28＋ハゲ化14＝42コマ）は `CHARACTER_DESIGN_PROMPTS.md` が正本。
 
 ---
 
