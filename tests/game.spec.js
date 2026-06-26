@@ -92,6 +92,20 @@ test('移動：→で右に進む', async ({ page }) => {
   expect(x1).toBeGreaterThan(x0 + 30);
 });
 
+test('歩行アニメ：→で歩くと walk アニメが再生される', async ({ page }) => {
+  await startGame(page);
+  await page.keyboard.down('ArrowRight');
+  await page.waitForTimeout(200);
+  const a = await page.evaluate(() => {
+    const p = window.__game.scene.getScene('GameScene').player;
+    return { state: p.state, playing: p.anims.isPlaying, key: p.anims.currentAnim ? p.anims.currentAnim.key : null };
+  });
+  await page.keyboard.up('ArrowRight');
+  expect(a.state).toBe('walk');
+  expect(a.playing).toBe(true);                 // アニメ再生中
+  expect(a.key).toBe('anim_player_walk');       // 歩行アニメ
+});
+
 test('ハゲ化：パワーアップ後の攻撃でビームが出る', async ({ page }) => {
   await startGame(page);
   await page.evaluate(() => window.__game.scene.getScene('GameScene').player.powerUp());

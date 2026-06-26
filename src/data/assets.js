@@ -14,6 +14,11 @@ export const IMAGES = {
   playerCrouchAttack: `${S}/extracted_v2/player_ojisan/crouch_attack.png`,
   playerJump: `${S}/extracted_v2/player_ojisan/jump.png`,
   playerFall: `${S}/extracted_v2/player_ojisan/fall.png`,
+  // 歩行アニメ用フレーム（複数コマ。差し替えで本物の歩きに）
+  playerWalk1: `${S}/extracted_v2/player_ojisan/walk_1.png`,
+  playerWalk2: `${S}/extracted_v2/player_ojisan/walk_2.png`,
+  playerWalk3: `${S}/extracted_v2/player_ojisan/walk_3.png`,
+  playerWalk4: `${S}/extracted_v2/player_ojisan/walk_4.png`,
   playerJumpAttack: `${S}/extracted_v2/player_ojisan/jump_attack.png`,
   playerHurt: `${S}/extracted_v2/player_ojisan/hurt.png`,
   playerGrabbed: `${S}/extracted_v2/player_ojisan/grabbed.png`,
@@ -71,4 +76,15 @@ export const PLAYER_TEX = {
     crouchAttack: 'baldPunch', jumpAttack: 'baldKick',
     grabbed: 'baldHurt', hurt: 'baldHurt', dead: 'baldHurt',
   },
+};
+
+// 状態→アニメーション定義（複数コマで動かす状態だけ書く）。
+// frames が2枚以上ロードできていれば BootScene がアニメを生成し、Player が再生する。
+// 1枚しか無い状態は PLAYER_TEX の静止画にフォールバック。
+// ★別キャラに差し替える時：同名のコマ画像（walk_1..4 等）を置けば、そのまま動く。
+//   アニメさせたい動きを増やしたい場合はここに状態を追加してコマ画像を用意するだけ。
+export const PLAYER_ANIMS = {
+  walk: { key: 'anim_player_walk',
+          frames: ['playerWalk1', 'playerWalk2', 'playerWalk3', 'playerWalk4'],
+          frameRate: 8, repeat: -1 },
 };

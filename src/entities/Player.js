@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { PLAYER, ATTACK, GRAB, POWERUP, FEEL } from '../constants.js';
-import { PLAYER_TEX } from '../data/assets.js';
+import { PLAYER_TEX, PLAYER_ANIMS } from '../data/assets.js';
 import { swapTexture, scaleToHeight, setBodyRatio } from '../helpers.js';
 
 const H = PLAYER.displayHeight;
@@ -61,6 +61,18 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   applyVisual() {
+    // アニメ定義がある状態（歩き等）はアニメ再生。ハゲ化中は専用アニメ無しなので静止画。
+    const anim = this.powered ? null : PLAYER_ANIMS[this.state];
+    if (anim && this.scene.anims.exists(anim.key)) {
+      if (!this.anims.isPlaying || this.anims.currentAnim.key !== anim.key) {
+        // 先頭コマでサイズ・足元を確定してからアニメ再生（全コマ同サイズ前提で足元維持）
+        swapTexture(this, anim.frames[0], H, WR, HR);
+        this.play(anim.key, true);
+      }
+      this.setFlipX(this.facing < 0);
+      return;
+    }
+    this.anims.stop(); // 静止状態に戻すときはアニメを止める
     const key = this.texSet[this.state] || this.texSet.idle;
     // しゃがみ系は表示高さを縮めて低く見せる（足元は維持される）
     const dh = (this.state === 'crouch' || this.state === 'crouchAttack')

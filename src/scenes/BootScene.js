@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { IMAGES } from '../data/assets.js';
+import { IMAGES, PLAYER_ANIMS } from '../data/assets.js';
 import { GAME_W, GAME_H } from '../constants.js';
 
 export class BootScene extends Phaser.Scene {
@@ -22,5 +22,19 @@ export class BootScene extends Phaser.Scene {
     // 音はAUDIO_PLAN手配後にここへ追加（this.load.audio(...)）
   }
 
-  create() { this.scene.start('TitleScene'); }
+  create() {
+    // アニメ生成（全コマがロードできているものだけ。コマが揃わなければ静止画フォールバック）
+    for (const cfg of Object.values(PLAYER_ANIMS)) {
+      const frames = cfg.frames.filter((k) => this.textures.exists(k));
+      if (frames.length >= 2 && !this.anims.exists(cfg.key)) {
+        this.anims.create({
+          key: cfg.key,
+          frames: frames.map((k) => ({ key: k })),
+          frameRate: cfg.frameRate,
+          repeat: cfg.repeat,
+        });
+      }
+    }
+    this.scene.start('TitleScene');
+  }
 }
