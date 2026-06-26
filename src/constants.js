@@ -1,6 +1,6 @@
 // おじさんX 数値定数。docs/TUNING.md が正本。マジックナンバーはここに集約する。
 
-export const GAME_W = 800;
+export const GAME_W = 1200; // 2:1 横長（スマホ横向きにフィット）。高さは据え置きで縦レイアウト不変
 export const GAME_H = 600;
 export const GRAVITY = 900;
 export const FLOOR_Y = 575;
