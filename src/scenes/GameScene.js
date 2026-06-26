@@ -186,7 +186,11 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.overlap(this.player.attackBox, this.boss, this._hitBoss, undefined, this);
     this.physics.add.overlap(this.boss.attackBox, this.player, this._bossHitPlayer, undefined, this);
     this.physics.add.overlap(this.playerBeams, this.boss, this._beamHitBoss, undefined, this);
-    this.ui.showBoss('刺客其ノ一　傘おじさん');
+    // 突進中のボス本体に当たると接触ダメージ
+    this.physics.add.overlap(this.boss, this.player, (boss, pl) => {
+      if (boss.charging) pl.takeDamage(boss.chargeDamage || 3, boss.x);
+    }, undefined, this);
+    this.ui.showBoss(this.boss.displayName);
   }
 
   // ハゲ化ビーム発射（Playerから呼ばれる）
@@ -265,8 +269,9 @@ export class GameScene extends Phaser.Scene {
 
   _enemyTouch(enemy, player) {
     if (enemy.dead) return;
-    if (enemy.type === 'card') player.takeDamage(ENEMY.card.contactDamage, enemy.x);
-    // hugのつかみは Enemy._updateHug 内で処理
+    // 接触ダメージ系（card/fruit/banana/chibi）。hugのつかみは Enemy._updateHug 内で処理
+    const dmg = enemy.cfg.contactDamage;
+    if (dmg && enemy.type !== 'hug') player.takeDamage(dmg, enemy.x);
   }
 
   onEnemyDefeated(enemy) {

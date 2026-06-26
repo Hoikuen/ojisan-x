@@ -44,7 +44,19 @@ export const ENEMY = {
   hug:  { displayHeight: 150, hp: 2, speed: 110, score: 100, grabRange: 60 },
   card: { displayHeight: 150, hp: 2, speed: 90,  score: 150,
           tooClose: 140, throwMin: 140, throwMax: 420, throwCdMs: 1500,
-          windupMs: 250, recoverMs: 300, highRatio: 0.5, contactDamage: 2, projDamage: 2 },
+          windupMs: 250, recoverMs: 300, highRatio: 0.5, contactDamage: 2, projDamage: 2,
+          proj: 'projCard' },
+  // フルーツ眼鏡女子（遠距離・流用）。cardと同系だが単一throwテクスチャ
+  fruit: { displayHeight: 145, hp: 2, speed: 90, score: 150,
+           tooClose: 140, throwMin: 140, throwMax: 440, throwCdMs: 1600,
+           windupMs: 250, recoverMs: 300, highRatio: 0.5, contactDamage: 2, projDamage: 2,
+           proj: 'projCard' },
+  // ちびリーマン（小型・飛びかかり）
+  chibi: { displayHeight: 110, hp: 1, speed: 150, score: 100,
+           jumpRange: 200, leapCdMs: 1200, recoverMs: 500, leapVX: 240, leapVY: -360, contactDamage: 2 },
+  // バナナ筋肉女子（突進・流用）
+  banana: { displayHeight: 145, hp: 3, speed: 120, score: 200,
+            chargeRange: 320, windupMs: 350, recoverMs: 600, chargeSpeed: 360, contactDamage: 3 },
 };
 
 export const BOSS = {
@@ -52,10 +64,49 @@ export const BOSS = {
   phase2HpRatio: 0.5,
   bodyRatioW: 0.45,
   bodyRatioH: 0.80,
+  introMs: 800,
+  // attacks[].kind: melee(判定箱) / projectile(弾) / charge(突進) / grab(つかみ)
   umbrella: {
-    displayHeight: 200, hp: 8, idleCdMs: 800, speed: 80,
-    thrust: { reach: 120, level: 'high', windupMs: 300, recoverMs: 500, damage: 3, weight: 0.6 },
-    sweep:  { reach: 90,  level: 'low',  windupMs: 200, recoverMs: 400, damage: 2, weight: 0.4 },
+    name: '刺客其ノ一　傘おじさん', displayHeight: 200, hp: 8, idleCdMs: 800, speed: 80,
+    attacks: [
+      { name: 'thrust', kind: 'melee', reach: 120, h: 60, level: 'high', yOff: -0.1, windupMs: 300, recoverMs: 500, damage: 3, weight: 0.6 },
+      { name: 'sweep',  kind: 'melee', reach: 90,  h: 40, level: 'low',  yOff: 0.25, windupMs: 200, recoverMs: 400, damage: 2, weight: 0.4 },
+    ],
+  },
+  boomerang: {
+    name: '刺客其ノ二　ブーメラン部長', displayHeight: 200, hp: 10, idleCdMs: 900, speed: 60,
+    attacks: [
+      { name: 'throw', kind: 'projectile', proj: 'projFile', level: 'high', returnAfterMs: 700,
+        speed: 300, windupMs: 300, recoverMs: 600, damage: 2, weight: 1 },
+    ],
+  },
+  muscle: {
+    name: '刺客其ノ三　筋肉専務', displayHeight: 280, hp: 14, idleCdMs: 1000, speed: 70,
+    attacks: [
+      { name: 'grab',   kind: 'grab',   range: 100, windupMs: 300, recoverMs: 500, weight: 0.5 },
+      { name: 'charge', kind: 'charge', speed: 380, durMs: 600, windupMs: 400, recoverMs: 700, damage: 3, weight: 0.5 },
+    ],
+  },
+  fortune: {
+    name: '刺客其ノ四　占い師おじさん', displayHeight: 210, hp: 12, idleCdMs: 1000, speed: 60,
+    attacks: [
+      { name: 'cast', kind: 'projectile', proj: 'projFireball', level: 'any', speed: 260,
+        transformTo: 'projSnake', transformAfterMs: 600, windupMs: 500, recoverMs: 500, damage: 2, weight: 1 },
+    ],
+  },
+  buddha: {
+    name: '中ボス　大仏豚おやつ', displayHeight: 280, hp: 8, idleCdMs: 1100, speed: 50,
+    attacks: [
+      { name: 'attack', kind: 'melee', reach: 100, h: 60, level: 'high', yOff: -0.05, windupMs: 400, recoverMs: 600, damage: 3, weight: 1 },
+    ],
+  },
+  mrx: {
+    name: '黒幕　Mr.X', displayHeight: 220, hp: 22, idleCdMs: 700, speed: 80,
+    attacks: [
+      { name: 'cane', kind: 'melee', reach: 100, h: 60, level: 'high', yOff: -0.1, windupMs: 250, recoverMs: 450, damage: 3, weight: 0.5 },
+      { name: 'kick', kind: 'melee', reach: 80,  h: 40, level: 'low',  yOff: 0.2,  windupMs: 200, recoverMs: 400, damage: 2, weight: 0.5 },
+    ],
+    phase2: { idleCdMs: 400 }, // HP50%以下で高速化
   },
 };
 

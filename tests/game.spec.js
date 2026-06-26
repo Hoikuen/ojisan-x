@@ -92,6 +92,34 @@ test('移動：→で右に進む', async ({ page }) => {
   expect(x1).toBeGreaterThan(x0 + 30);
 });
 
+// 全5フロア：全ウェーブの敵＋ボスを出して実行時エラーが出ないか
+for (const [fid, expectBoss] of [[1, 'umbrella'], [2, 'boomerang'], [3, 'muscle'], [4, 'fortune'], [5, 'mrx']]) {
+  test(`フロア${fid}：敵・ボス（${expectBoss}）が生成され実行時エラーなし`, async ({ page }) => {
+    const errors = [];
+    page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
+    page.on('pageerror', (e) => errors.push(String(e)));
+    await page.goto('/');
+    await page.waitForFunction(() => window.__game && window.__game.scene.getScene('TitleScene').sys.settings.status === 5, { timeout: 15000 });
+    await page.evaluate((id) => window.__game.scene.getScene('TitleScene').scene.start('GameScene', { floorId: id, score: 0 }), fid);
+    await page.waitForFunction(() => { const gs = window.__game.scene.getScene('GameScene'); return gs.sys.settings.status === 5 && gs.player && gs.player.body; }, { timeout: 15000 });
+    // テスト中はプレイヤーを無敵にして（移動中に死んでscene再起動しないように）ボスまで確実に到達させる
+    await page.evaluate(() => { window.__game.scene.getScene('GameScene').player.invincibleUntil = 1e12; });
+    const worldW = await page.evaluate(() => window.__game.scene.getScene('GameScene').worldW);
+    // 段階的に右へ進めて全ウェーブをトリガー
+    for (let x = 400; x <= worldW - 900; x += 350) {
+      await page.evaluate((px) => { const gs = window.__game.scene.getScene('GameScene'); if (gs.player && gs.player.body) { gs.player.x = px; gs.player.body.reset(px, gs.player.y); } }, x);
+      await page.waitForTimeout(150);
+    }
+    // ボス部屋へ入ってボスを出す（トリガーは worldW-680）
+    await page.evaluate(() => { const gs = window.__game.scene.getScene('GameScene'); const bx = gs.worldW - 640; if (gs.player && gs.player.body) { gs.player.x = bx; gs.player.body.reset(bx, gs.player.y); } });
+    await page.waitForFunction(() => !!window.__game.scene.getScene('GameScene').boss, { timeout: 5000 });
+    await page.waitForTimeout(1800); // ボス登場＋各攻撃（melee/弾/突進/つかみ）を回す
+    const info = await page.evaluate(() => { const gs = window.__game.scene.getScene('GameScene'); return { boss: gs.boss ? gs.boss.type : null }; });
+    expect(info.boss).toBe(expectBoss);          // 想定のボスが出現
+    expect(errors, errors.join('\n')).toHaveLength(0); // 実行時エラーなし
+  });
+}
+
 test('歩行アニメ：→で歩くと walk アニメが再生される', async ({ page }) => {
   await startGame(page);
   await page.keyboard.down('ArrowRight');

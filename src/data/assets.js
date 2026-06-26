@@ -44,14 +44,61 @@ export const IMAGES = {
   cardThrowLow: `${S}/extracted_v2/card/throw_low.png`,
   cardHurt: `${S}/extracted_v2/card/hurt.png`,
   cardDeath: `${S}/extracted_v2/card/death.png`,
-  // ボス：傘おじさん
+  // 敵：ちびリーマン（F2〜・飛びかかり）
+  chibiIdle: `${S}/extracted_v2/chibi/idle.png`,
+  chibiJump: `${S}/extracted_v2/chibi/jump.png`,
+  chibiHurt: `${S}/extracted_v2/chibi/hurt.png`,
+  chibiDeath: `${S}/extracted_v2/chibi/death.png`,
+  // 敵：フルーツ眼鏡女子（F4・遠距離／流用）
+  fruitIdle: `${S}/extracted_v2/schoolgirl_fix/idle.png`,
+  fruitWalk: `${S}/extracted_v2/schoolgirl_fix/walk_1.png`,
+  fruitThrow: `${S}/extracted_v2/schoolgirl_fix/throw.png`,
+  fruitHurt: `${S}/extracted_v2/schoolgirl_fix/hurt.png`,
+  // 敵：バナナ筋肉女子（F3・突進／流用。throwを突進ポーズに転用）
+  bananaIdle: `${S}/extracted_v2/gorilla_fix/idle.png`,
+  bananaWalk: `${S}/extracted_v2/gorilla_fix/walk_1.png`,
+  bananaCharge: `${S}/extracted_v2/gorilla_fix/throw.png`,
+  bananaHurt: `${S}/extracted_v2/gorilla_fix/hurt.png`,
+  // ボス：傘おじさん(F1)
   umbrellaIdle: `${S}/extracted_v2/umbrella/idle.png`,
   umbrellaThrust: `${S}/extracted_v2/umbrella/thrust.png`,
   umbrellaSweep: `${S}/extracted_v2/umbrella/sweep.png`,
   umbrellaHurt: `${S}/extracted_v2/umbrella/hurt.png`,
   umbrellaDeath: `${S}/extracted_v2/umbrella/death.png`,
+  // ボス：ブーメラン部長(F2)
+  boomerangIdle: `${S}/extracted_v2/boomerang/idle.png`,
+  boomerangThrow: `${S}/extracted_v2/boomerang/throw.png`,
+  boomerangHurt: `${S}/extracted_v2/boomerang/hurt.png`,
+  boomerangDeath: `${S}/extracted_v2/boomerang/death.png`,
+  // ボス：筋肉専務(F3)
+  muscleIdle: `${S}/extracted_v2/muscle/idle.png`,
+  muscleGrab: `${S}/extracted_v2/muscle/grab.png`,
+  muscleCharge: `${S}/extracted_v2/muscle/charge.png`,
+  muscleHurt: `${S}/extracted_v2/muscle/hurt.png`,
+  muscleDeath: `${S}/extracted_v2/muscle/death.png`,
+  // ボス：占い師おじさん(F4)
+  fortuneIdle: `${S}/extracted_v2/fortune/idle.png`,
+  fortuneCast: `${S}/extracted_v2/fortune/cast.png`,
+  fortuneHurt: `${S}/extracted_v2/fortune/hurt.png`,
+  fortuneDeath: `${S}/extracted_v2/fortune/death.png`,
+  // 中ボス：大仏豚(F4・流用)
+  buddhaIdle: `${S}/extracted_v2/boss/boss_idle.png`,
+  buddhaAttack: `${S}/extracted_v2/boss/boss_attack.png`,
+  buddhaHurt: `${S}/extracted_v2/boss/boss_hurt.png`,
+  buddhaDeath: `${S}/extracted_v2/boss/boss_pose_5.png`,
+  // ボス：Mr.X(F5・ラスボス)
+  mrxIdle: `${S}/extracted_v2/mrx/idle.png`,
+  mrxAttack1: `${S}/extracted_v2/mrx/attack1.png`,
+  mrxAttack2: `${S}/extracted_v2/mrx/attack2.png`,
+  mrxPhase2: `${S}/extracted_v2/mrx/phase2.png`,
+  mrxHurt: `${S}/extracted_v2/mrx/hurt.png`,
+  mrxDeath: `${S}/extracted_v2/mrx/death.png`,
   // 弾・FX・アイテム
   projCard: `${S}/proj/card.png`,
+  projFile: `${S}/proj/file.png`,
+  projFireball: `${S}/proj/fireball.png`,
+  projSnake: `${S}/proj/snake.png`,
+  projMoth: `${S}/proj/moth.png`,
   beam: `${S}/proj/beam.png`,
   fxHit: `${S}/fx/hit.png`,
   fxStar: `${S}/fx/star.png`,
