@@ -7,6 +7,7 @@ export const FLOOR_Y = 575;
 
 export const PLAYER = {
   displayHeight: 160,
+  crouchHeightFactor: 0.7, // しゃがみ時は表示高さを縮める（見た目が低くなる）
   bodyRatioW: 0.40,
   bodyRatioH: 0.85,
   speed: 220,

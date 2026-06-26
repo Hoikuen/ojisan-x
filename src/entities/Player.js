@@ -62,7 +62,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
   applyVisual() {
     const key = this.texSet[this.state] || this.texSet.idle;
-    swapTexture(this, key, H, WR, HR);
+    // しゃがみ系は表示高さを縮めて低く見せる（足元は維持される）
+    const dh = (this.state === 'crouch' || this.state === 'crouchAttack')
+      ? Math.round(H * PLAYER.crouchHeightFactor) : H;
+    swapTexture(this, key, dh, WR, HR);
     this.setFlipX(this.facing < 0);
   }
 

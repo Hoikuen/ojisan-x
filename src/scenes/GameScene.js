@@ -147,9 +147,15 @@ export class GameScene extends Phaser.Scene {
       if (this.player.x >= wave.x) {
         this.wavesSpawned.add(i);
         const bossRoomLeft = this.worldW - BOSS_ROOM_W;
+        const cam = this.cameras.main;
+        // カメラは追従でこのあと右へ動く。現在の右端と「追従後の右端」の大きい方の外側に出す
+        // （でないと湧いた直後にカメラが追いついて画面内に見えてしまう）。
+        const camRightNow = cam.scrollX + cam.width;
+        const eventualScrollX = Phaser.Math.Clamp(this.player.x - cam.width / 2, 0, this.worldW - cam.width);
+        const baseX = Math.max(camRightNow, eventualScrollX + cam.width) + 70;
         wave.enemies.forEach((e, j) => {
-          // ボス部屋内には湧かせない（前方クランプ）
-          const sx = Math.min(this.player.x + 350 + j * 70, bossRoomLeft - 80);
+          // 画面外の右端から登場（見えないところから歩いて入る）。ボス部屋手前でクランプ。
+          const sx = Math.min(baseX + j * 70, bossRoomLeft - 60, this.worldW - 40);
           const en = new Enemy(this, sx, FLOOR_Y - 120, e.type);
           this.enemies.add(en);
           // 接地状態で出す（空中spawn→落下で「1段上に見える」のを防ぐ）

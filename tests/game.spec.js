@@ -145,6 +145,8 @@ test('しゃがみ：↓で crouch になり、上段弾を回避・下段弾は
     const gs = window.__game.scene.getScene('GameScene');
     const p = gs.player;
     const stateBefore = p.state; // 被弾前のしゃがみ状態を記録（被弾でhurtに変わるため）
+    const crouchBottom = Math.round(p.body.bottom);   // しゃがみ中の足元（床575のはず）
+    const crouchDH = Math.round(p.displayHeight);      // しゃがみ中の表示高さ（160より小さいはず）
     const hp0 = p.hp;
     let highDestroyed = false, lowDestroyed = false;
     // 上段弾：しゃがみで回避（同じ弾オブジェクトを2回当てる＝通過中の複数フレームを再現）
@@ -157,9 +159,11 @@ test('しゃがみ：↓で crouch になり、上段弾を回避・下段弾は
     p.state = stateBefore;
     gs._projHitPlayer({ level: 'low', damage: 3, x: p.x + 50, destroy() { lowDestroyed = true; } }, p); // 下段＝当たる
     const hpLow = p.hp;
-    return { state: stateBefore, hp0, hpHigh1, hpHigh2, hpLow, highDestroyed, lowDestroyed };
+    return { state: stateBefore, crouchBottom, crouchDH, hp0, hpHigh1, hpHigh2, hpLow, highDestroyed, lowDestroyed };
   });
   expect(res.state).toBe('crouch');
+  expect(Math.abs(res.crouchBottom - 575)).toBeLessThan(3); // しゃがんでも足元は床から離れない
+  expect(res.crouchDH).toBeLessThan(160);                   // しゃがみは表示高さが縮む（低く見える）
   expect(res.hpHigh1).toBe(res.hp0);        // 上段は回避＝無傷
   expect(res.hpHigh2).toBe(res.hp0);        // 通過中に立っても再ヒットしない（確実に回避）
   expect(res.hpLow).toBeLessThan(res.hp0);  // 下段は当たる

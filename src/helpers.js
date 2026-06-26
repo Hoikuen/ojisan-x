@@ -25,10 +25,19 @@ export function setBodyRatio(go, widthRatio, heightRatio, alignBottom = false) {
 //   この「位置の手動補正」がジャンプ中の物理と衝突してプレイヤーを落としていた。
 //   位置を触らず、setTexture＋scale＋body再設定（同サイズ）だけ行うのが正解。
 export function swapTexture(go, texKey, displayHeight, wRatio, hRatio) {
-  if (go.texture.key === texKey) return;
+  const heightChanged = Math.round(go.displayHeight) !== Math.round(displayHeight);
+  if (go.texture.key === texKey && !heightChanged) return;
+  const oldBottom = go.body.bottom; // 切替前の足元（この時点は正確）
   go.setTexture(texKey);
   scaleToHeight(go, displayHeight);
   setBodyRatio(go, wRatio, hRatio, true);
+  // displayHeightが変わる切替（しゃがみ等）のときだけ足元を維持する。
+  // 同じ高さの切替（idle/walk/jump）は位置を触らない＝ジャンプの放物線を壊さない。
+  // body.reset を使う：位置を合わせつつ速度を0にする（spawn接地と同じ＝床をすり抜けない）。
+  // しゃがみは必ず接地中なので速度0で安全。
+  if (heightChanged) {
+    go.body.reset(go.x, oldBottom - displayHeight / 2);
+  }
 }
 
 export function clamp(v, min, max) {
