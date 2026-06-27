@@ -151,8 +151,8 @@ export const IMAGES = {
 export const PLAYER_TEX = {
   normal: {
     idle: 'playerIdle1', walk: 'playerWalk1', jump: 'playerJump', fall: 'playerFall',
-    crouch: 'playerCrouch1', punch: 'playerPunch1', kick: 'playerKick1',
-    crouchAttack: 'playerCrouchAtk1', jumpAttack: 'playerJumpAtk1',
+    crouch: 'playerCrouch1', punch: 'playerPunch2', kick: 'playerKick2',
+    crouchAttack: 'playerCrouchAtk2', jumpAttack: 'playerJumpAtk1',
     grabbed: 'playerGrabbed1', hurt: 'playerHurt1', dead: 'playerDeath1',
   },
   bald: {
@@ -172,10 +172,14 @@ export const PLAYER_ANIMS = {
   normal: {
     idle:         { key: 'anim_pn_idle',  frames: ['playerIdle1', 'playerIdle2'], frameRate: 3, repeat: -1 },
     walk:         { key: 'anim_pn_walk',  frames: ['playerWalk1', 'playerWalk2', 'playerWalk3', 'playerWalk4'], frameRate: 8, repeat: -1 },
-    punch:        { key: 'anim_pn_punch', frames: ['playerPunch1', 'playerPunch2', 'playerPunch3'], frameRate: 20, repeat: 0 },
-    kick:         { key: 'anim_pn_kick',  frames: ['playerKick1', 'playerKick2', 'playerKick3'], frameRate: 20, repeat: 0 },
+    // punch_1=構え→punch_2=突き(frame2)で終わる。punch_3(frame3)は戻し動作なので外す（当てポーズを保持）
+    punch:        { key: 'anim_pn_punch', frames: ['playerPunch1', 'playerPunch2'], frameRate: 14, repeat: 0 },
+    // kick_1=踏み込み→kick_2=蹴り(frame5)で終わる。kick_3(frame6)は脚を下ろす弱い後動作なので外す
+    // （末尾フレームが静止保持されるため、明確な蹴り=kick_2 を最後に残す）
+    kick:         { key: 'anim_pn_kick',  frames: ['playerKick1', 'playerKick2'], frameRate: 14, repeat: 0 },
     crouch:       { key: 'anim_pn_crch',  frames: ['playerCrouch1', 'playerCrouch2'], frameRate: 4, repeat: -1 },
-    crouchAttack: { key: 'anim_pn_catk',  frames: ['playerCrouchAtk1', 'playerCrouchAtk2', 'playerCrouchAtk3'], frameRate: 20, repeat: 0 },
+    // catk_1=構え→catk_2=当て(frame4・インパクト有)で終わる。catk_3(戻し)は外す
+    crouchAttack: { key: 'anim_pn_catk',  frames: ['playerCrouchAtk1', 'playerCrouchAtk2'], frameRate: 14, repeat: 0 },
     jumpAttack:   { key: 'anim_pn_jatk',  frames: ['playerJumpAtk1', 'playerJumpAtk2'], frameRate: 16, repeat: 0 },
     grabbed:      { key: 'anim_pn_grab',  frames: ['playerGrabbed1', 'playerGrabbed2'], frameRate: 6, repeat: -1 },
     hurt:         { key: 'anim_pn_hurt',  frames: ['playerHurt1', 'playerHurt2'], frameRate: 12, repeat: 0 },
