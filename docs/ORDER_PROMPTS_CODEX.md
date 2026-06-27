@@ -169,19 +169,25 @@ NO characters, NO text, NO logos. Size 1536x864. Opaque full illustration (no tr
 # P1（F2–F3）
 
 ## P1-0 主人公おじさん（ハゲ化＝パワーアップ版・14コマ）→ `extracted_v2/player_bald/` [Codexで生成]
-- **3枚の緑シート**で発注。P0-0と**同一人物・同一スケール・足元下端**。変えるのは「完全なスキンヘッド＋激怒の赤面＋湯気/オーラ」だけ。
-- 可能なら ojisan-hop の `player_powered_a_classic_sheet_chromakey_20260627.png` を参照画像に。
+- **3枚の緑シート**で発注。**P0-0で生成済みの新・主人公シート（`raw_generated/player_basic_sheet.png` / `player_attack_sheet.png` / `player_air_sheet.png`）を必ず参照画像に使い**、同一人物・同一画風・同一頭身・同一ピクセルサイズ・足元下端で描く。変えるのは「完全なスキンヘッド＋激怒の赤面＋湯気/オーラ」**だけ**。
+  - ※旧 ojisan-hop の bald 参照は**使わない**（画風が新主人公と別物のため。旧baldには「1/2」透かしも混入していた）。
+- ★**3枚すべてで人物の大きさ・足元位置を厳密に一致**させること（Claude側で3枚を1つの共通キャンバスに統合抽出するため、シート間で体格がズレると idle↔punch 等でガクつく）。
+- ★**文字・数字・コマ番号・透かし・ロゴを一切入れない**（旧素材で「1/2」混入の事故あり）。
 - 保存名：`bald_basic_sheet.png` / `bald_attack_sheet.png` / `bald_air_sheet.png`
 - 共通キャラ記述：
 ```
-The SAME "Ojisan" salaryman as the normal version but now COMPLETELY BALD (shiny skinhead, no hair),
-face red with fury, steam/aura around him, intense angry eyes. Same navy suit, white shirt, red tie, plump body,
-white-framed sunglasses. Same head-to-body ratio and SAME overall size as the normal version, feet on bottom edge.
-Cute retro 16-bit pixel-art, bold outlines, flat cel shading. Solid flat pure green background (#00FF00), one pose per cell, feet aligned.
+The SAME "Ojisan" salaryman character as in the reference sheets (player_basic_sheet.png / player_attack_sheet.png):
+identical art style, identical chunky body proportions, identical head-to-body ratio, identical pixel size,
+same navy suit, white shirt, red tie, same glasses, same mustache — but now COMPLETELY BALD (shiny skinhead, no hair),
+his face flushed red with fury, intense angry eyes, with steam puffs and an angry aura around him.
+Side view facing right, full body, one pose per cell, evenly spaced in a single horizontal row,
+FEET ALIGNED to the bottom edge, and the figure the SAME height in every cell and across all three sheets.
+Cute retro 16-bit pixel-art, bold outlines, flat cel shading. Solid flat pure green background (#00FF00),
+no gradient, no scenery, no shadow, NO text, NO numbers, NO watermark.
 ```
 - 各シートのポーズ：
   - **bald_basic_sheet**（6コマ：idle_1, idle_2, walk_1, walk_2, walk_3, walk_4）＝怒り待機×2＋怒り歩き4コマ
-  - **bald_attack_sheet**（4コマ：punch_1, punch_2, kick_1, kick_2）＝殴り引き/当て・蹴り引き/当て
+  - **bald_attack_sheet**（4コマ：punch_1, punch_2, kick_1, kick_2）。**当てコマ(punch_2 / kick_2)を最も明確なシルエットに**すること（ゲームは"当てコマで停止保持"する）：punch_1=構え→**punch_2=拳を真っ直ぐ前へ突き出す当て**、kick_1=踏み込み→**kick_2=脚を地面と平行に腰の高さへ伸ばす水平前蹴り（脚と胴の間に明確な隙間）**。
   - **bald_air_sheet**（4コマ：jump, fall, hurt_1, hurt_2）＝ジャンプ・落下・被弾×2
 
 ## P1-2 ちびリーマン（新入社員・小型）→ `extracted_v2/chibi/`（4ポーズ: idle, jump, hurt, death）
