@@ -6,8 +6,8 @@
 > 1キャラ＝1スプライトシート（全ポーズを横1列・緑背景#00FF00）。
 > 納品されたら私が `extract_sheet.py --bg green` で分割→対象パスへ配置。
 >
-> ※**主人公(player_ojisan / player_bald)はここに含めない** — A案と同一人物にするため参照画像が要るので
->   Antigravity（A案立ち絵を添付）で `CHARACTER_DESIGN_PROMPTS.md ②③`（背景は緑に）を使う方が安全。
+> 主人公(player_ojisan / player_bald)もCodexで生成する（P0-0・P1-0）。同一人物を保つため、可能なら
+>   ojisan-hopのA案シートを参照画像に渡す。参照不可でも下の文章記述だけで同一おじさんとして成立する。
 >
 > ⚠️ DALL-E系は単色背景にシーンを足したがる癖がある。各プロンプト末尾の「solid flat pure green」を強調。
 >   もしシートが崩れる/緑が濁る場合は「make each pose as a SEPARATE image」に切替（各ポーズ単体生成）。
@@ -27,9 +27,10 @@
 ### Codexにそのまま渡す指示（MDを自動で順に処理させる）
 ```
 このリポジトリの docs/ORDER_PROMPTS_CODEX.md を読み、P0→P1→P2の順に各イラストを生成してください。
-- キャラの緑スクリーンシートは public/assets/sprites/raw_generated/ に「キャラ名_sheet.png」で保存
+- キャラの緑スクリーンシートは public/assets/sprites/raw_generated/ に「シート名_sheet.png」で保存
 - 背景の不透明1枚絵は public/assets/sprites/background/ に指定ファイル名で保存
-- 主人公(player_*)はスキップ（別途Antigravityで作る）
+- 主人公(P0-0/P1-0=player_*)も生成する。可能なら ojisan-hop の A案シートを参照画像に使い、
+  全シートで主人公の頭身・体の大きさ・足元位置を完全に統一する（idleと同じスケール）
 - 1枚ごとに、生成したファイル名と対応するマニフェスト項目を報告
 - 緑が濁る/シートが崩れる時は、そのキャラを「1ポーズ1画像」に分けて生成し直す
 ```
@@ -52,6 +53,32 @@ all feet aligned to the bottom. (If multi-pose is unreliable, make each pose as 
 ---
 
 # P0（F1・最優先）
+
+## P0-0 主人公おじさん（通常版・格闘28コマ）→ `extracted_v2/player_ojisan/` ★最重要 [Codexで生成]
+- **5枚の緑シート**に分けて発注（コマ多数のため）。**全シートで同一人物・同一頭身・同一スケール・足元下端を厳守**（ここが崩れると後で全部やり直し）。
+- 可能なら ojisan-hop の `assets/sprites/player/source/player_normal_a_classic_sheet_chromakey_20260626.png` を**参照画像**に使う（同じA案おじさんにするため）。
+- 保存名：`player_basic_sheet.png` / `player_attack_sheet.png` / `player_crouch_sheet.png` / `player_air_sheet.png` / `player_react_sheet.png`
+- 共通キャラ記述（毎回入れる）：
+```
+A friendly chubby middle-aged Japanese salaryman ("Ojisan"): white-framed sunglasses, black mustache,
+side-parted black hair (slightly receding), rosy pink cheeks, dark navy business suit, white shirt, red necktie,
+plump round belly, short limbs, soft double chin. Cute retro 16-bit pixel-art, bold outlines, flat cel shading.
+Glasses: only a thin light-gray reflection at the lens edge, NO large black reflection.
+KEEP THE EXACT SAME character, same head-to-body ratio and SAME overall size in every pose across ALL sheets.
+Side view facing right, full body, feet on the very bottom edge.
+Solid flat pure green chroma-key background (#00FF00), no gradient/scenery/shadow/text. One pose per cell, evenly spaced in one row, feet aligned.
+```
+- 各シートのポーズ（↑の記述の後に続ける）：
+  - **player_basic_sheet**（6コマ：idle_1, idle_2, walk_1, walk_2, walk_3, walk_4）
+    `Poses: (1) idle standing relaxed; (2) idle slight breathing (shoulders a touch higher); (3-6) a 4-frame walk cycle (right foot fwd / passing / left foot fwd / passing).`
+  - **player_attack_sheet**（6コマ：punch_1, punch_2, punch_3, kick_1, kick_2, kick_3）
+    `Poses: (1) punch wind-up; (2) punch full extension (briefcase/fist forward); (3) punch recover; (4) kick wind-up (leg back); (5) kick full extension (leg forward); (6) kick recover.`
+  - **player_crouch_sheet**（5コマ：crouch_1, crouch_2, crouch_attack_1, crouch_attack_2, crouch_attack_3）
+    `Poses: (1) crouch low guard; (2) crouch slight shift (still low); (3) crouch-attack wind-up low; (4) crouch-attack swing forward at ankle height; (5) crouch-attack recover. (Crouch poses are clearly lower/compact.)`
+  - **player_air_sheet**（4コマ：jump, fall, jump_attack_1, jump_attack_2）
+    `Poses: (1) jump rising (legs tucked); (2) fall descending (legs apart); (3) jump-attack air wind-up; (4) jump-attack flying kick/strike.`
+  - **player_react_sheet**（7コマ：grabbed_1, grabbed_2, hurt_1, hurt_2, death_1, death_2, death_3）
+    `Poses: (1) grabbed struggling one way; (2) grabbed struggling the other (jitter); (3) hurt recoil start; (4) hurt recoil max; (5) death stagger; (6) death falling; (7) knocked-out on the ground with dizzy stars.`
 
 ## P0-2 ハグ魔（酔っぱらい）→ `extracted_v2/hug/`（5ポーズ: idle, walk, grab, hurt, death）
 ```
@@ -124,6 +151,22 @@ NO characters, NO text, NO logos. Size 1536x864. Opaque full illustration (no tr
 ---
 
 # P1（F2–F3）
+
+## P1-0 主人公おじさん（ハゲ化＝パワーアップ版・14コマ）→ `extracted_v2/player_bald/` [Codexで生成]
+- **3枚の緑シート**で発注。P0-0と**同一人物・同一スケール・足元下端**。変えるのは「完全なスキンヘッド＋激怒の赤面＋湯気/オーラ」だけ。
+- 可能なら ojisan-hop の `player_powered_a_classic_sheet_chromakey_20260627.png` を参照画像に。
+- 保存名：`bald_basic_sheet.png` / `bald_attack_sheet.png` / `bald_air_sheet.png`
+- 共通キャラ記述：
+```
+The SAME "Ojisan" salaryman as the normal version but now COMPLETELY BALD (shiny skinhead, no hair),
+face red with fury, steam/aura around him, intense angry eyes. Same navy suit, white shirt, red tie, plump body,
+white-framed sunglasses. Same head-to-body ratio and SAME overall size as the normal version, feet on bottom edge.
+Cute retro 16-bit pixel-art, bold outlines, flat cel shading. Solid flat pure green background (#00FF00), one pose per cell, feet aligned.
+```
+- 各シートのポーズ：
+  - **bald_basic_sheet**（6コマ：idle_1, idle_2, walk_1, walk_2, walk_3, walk_4）＝怒り待機×2＋怒り歩き4コマ
+  - **bald_attack_sheet**（4コマ：punch_1, punch_2, kick_1, kick_2）＝殴り引き/当て・蹴り引き/当て
+  - **bald_air_sheet**（4コマ：jump, fall, hurt_1, hurt_2）＝ジャンプ・落下・被弾×2
 
 ## P1-2 ちびリーマン（新入社員・小型）→ `extracted_v2/chibi/`（4ポーズ: idle, jump, hurt, death）
 ```
@@ -252,9 +295,10 @@ NO characters, NO readable text/logos. Size 1536x864. Opaque.
 
 ---
 
-## 主人公（参考・Antigravity推奨）
-A案と同一人物にするため画像添付が要る。`CHARACTER_DESIGN_PROMPTS.md ②(通常28)③(ハゲ化14)` を使い、
-背景指定だけ「pure white」→「solid flat pure green (#00FF00)」に置換して発注する。
-```
-（A案立ち絵を添付して）[CHARACTER_DESIGN_PROMPTS.md ②の本文]…背景は solid flat pure green (#00FF00)。
-```
+## 主人公の発注について（CodexでOK）
+主人公はこのファイルの **P0-0（通常28コマ／5シート）** と **P1-0（ハゲ化14コマ／3シート）** で発注する。
+他キャラと同じくCodexで生成。同一人物を保つコツ：
+- 可能なら ojisan-hop の A案シート（`assets/sprites/player/source/player_normal_a_classic_sheet_chromakey_20260626.png` ／ powered版）を**参照画像**に渡す。
+- **全シートで頭身・体の大きさ・足元位置を統一**するよう毎回強調（バラつくと後で全コマ整列し直しになる）。
+- 納品後はClaude側が**通常28コマ／ハゲ化14コマを"全コマ共通キャンバス"で一括整列**して `player_ojisan/`・`player_bald/` に配置する（サイズのガクつき防止）。
+- 詳しいコマ割りの正本は `CHARACTER_DESIGN_PROMPTS.md ②③`（背景は緑#00FF00に読み替え）。
