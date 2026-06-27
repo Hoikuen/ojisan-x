@@ -16,7 +16,7 @@ export const FLOORS = [
   },
   {
     id: 2, name: 'オフィス', label: '2F ─ オフィス',
-    worldWidth: 3600, timeLimit: 90, background: 'bgFloor1', powerupX: 2680,
+    worldWidth: 3600, timeLimit: 90, background: 'bgFloor2', powerupX: 2680,
     waves: [
       { x: 500,  enemies: [{ type: 'chibi' }, { type: 'chibi' }] },
       { x: 1100, enemies: [{ type: 'card' }, { type: 'card' }] },
@@ -27,7 +27,7 @@ export const FLOORS = [
   },
   {
     id: 3, name: '工事現場', label: '3F ─ 工事現場',
-    worldWidth: 4000, timeLimit: 100, background: 'bgFloor1', powerupX: 3080,
+    worldWidth: 4000, timeLimit: 100, background: 'bgFloor3', powerupX: 3080,
     waves: [
       { x: 500,  enemies: [{ type: 'banana' }] },
       { x: 1200, enemies: [{ type: 'chibi' }, { type: 'chibi' }, { type: 'chibi' }] },
@@ -38,7 +38,7 @@ export const FLOORS = [
   },
   {
     id: 4, name: '占いバー', label: '4F ─ 占いバー',
-    worldWidth: 3600, timeLimit: 100, background: 'bgFloor1', powerupX: 2680,
+    worldWidth: 3600, timeLimit: 100, background: 'bgFloor4', powerupX: 2680,
     waves: [
       { x: 500,  enemies: [{ type: 'fruit' }, { type: 'fruit' }] },
       { x: 1300, enemies: [{ type: 'card' }, { type: 'card' }, { type: 'hug' }] },
@@ -48,7 +48,7 @@ export const FLOORS = [
   },
   {
     id: 5, name: '社長室', label: 'RF ─ 社長室',
-    worldWidth: 3200, timeLimit: 110, background: 'bgFloor1', powerupX: 2260,
+    worldWidth: 3200, timeLimit: 110, background: 'bgFloor5', powerupX: 2260,
     waves: [
       { x: 400,  enemies: [{ type: 'hug' }, { type: 'hug' }, { type: 'card' }] },
       { x: 1000, enemies: [{ type: 'chibi' }, { type: 'chibi' }, { type: 'banana' }] },

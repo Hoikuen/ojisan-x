@@ -139,6 +139,10 @@ export const IMAGES = {
   // 背景
   bgTitle: `${S}/background/title.png`,
   bgFloor1: `${S}/background/floor1.png`,
+  bgFloor2: `${S}/background/floor2.png`,
+  bgFloor3: `${S}/background/floor3.png`,
+  bgFloor4: `${S}/background/floor4.png`,
+  bgFloor5: `${S}/background/floor5.png`,
 };
 
 // 状態→テクスチャキー（静止画フォールバック）。

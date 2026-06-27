@@ -68,3 +68,31 @@ Codexが `public/assets/sprites/raw_generated/` に**新規納品（緑シート
 - Codex出力先：キャラ緑シート→`raw_generated/`、背景の不透明絵→`background/`。
 - fruit/banana/大仏豚は ojisan-hop から流用（発注しない）。
 - git identity は匿名固定。公開リポジトリなので実名混入を毎回チェック。
+
+---
+
+## 🔄 引き継ぎ（2026-06-27 その2／最新）
+
+### 0. 一行で
+Codex納品分を抽出・配線してゲームに反映し、**push＝GitHub Pages自動デプロイ済み**（スマホ実機確認フェーズ）。主人公28コマ＋F2-5敵ボス5体＋背景floor2-5が本物化。残課題は「幽霊アセット3点の配線」「旧ゴミ整理」「bald未納品」。
+
+### 1. 今セッションでやったこと
+- **主人公28コマ抽出**：立ち23コマ（basic/attack/air/react）を**4シート1共通キャンバス**に統合し、しゃがみ5コマは別キャンバス（applyVisualの×0.7係数が縮みを担当）。図形高さがシート間で一貫（idle/walk~350, punch/kick~338）＝シート跨ぎのサイズブレを排除。新ツール `tools/extract_multi_sheet.py`。
+- **F2-5 敵/ボス5体抽出**：chibi/boomerang/muscle/fortune/mrx を Enemy.js・Boss.js の TEX 順で `extracted_v2/` へ。全コマ緑残り0.00・空フレーム無し・連結成分=1（客観計測ツール `tools/probe_assets.py` で検証）。
+- **背景配線**：assets.js に bgFloor2..5 追加＋floors.js の各フロア background 差し替え。title は既存 bgTitle 配線済み。
+- **検証**：`npm run build` 成功、`npx playwright test` 18件green、assets.js 全109画像パス実在（欠落＝クラッシュ要因なし）。
+- commit & push → Actions(deploy.yml)で自動デプロイ。
+
+### 2. 重要な判断（データ根拠つき）
+- **proj/fx/items は現状維持**：Mファイルは既に適正サイズ＋透過済み（四隅BLACK・緑/マゼンタ≒0）。`snake.png`の緑11%は緑背景flood-fill後に内部に残った「蛇の体色（緑）」と判断し、再キーイングしない（本体を消すリスク回避）。
+- **raw_generated の新着シート＋_source_generated は未追跡のまま**（手元のみ・非デプロイ＝容量肥大回避）。
+
+### 3. 残課題（次の手）
+- **幽霊アセット3点**：`projMoth`/`fxStar`/`itemCash` はロードされるが**ゲームロジックから未参照＝画面に出ない**。出すには軽い実装が必要（①どの敵が蛾弾を撃つか割当 ②命中/撃破で星FX散らす ③フロアに現金ピックアップ配置＝取得+1000点。`SCORE.itemCash`は得点定数のみ存在）。要設計判断。
+- **旧ゴミ11ファイル**：`extracted_v2/player_ojisan/` に未参照の旧単一名＋生白背景画像（`crouch.png`766x1024等）が追跡済みで残存（src参照0件・ビルド無害）。`git rm`で整理推奨。
+- **bald（ハゲ化）主人公**：未納品（プレースホルダのまま）。ORDER_PROMPTS_CODEX P1-0で発注済み。
+- **流用キャラ**：schoolgirl_fix/gorilla_fix は既に中身あり、boss は一部プレースホルダ。
+
+### 4. 確認URL・起動
+- 本番（スマホ確認）：https://hoikuen.github.io/ojisan-x/ （push後 Actions 完了まで1-2分）。横向き・タッチUI（TouchControls）対応、Phaser.Scale.FIT で画面フィット。
+- ローカル：`npm run dev`。テスト：`npx playwright test`（サンドボックスはローカルポートlistenを塞ぐので要 dangerouslyDisableSandbox 相当）。
