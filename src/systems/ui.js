@@ -18,7 +18,7 @@ export class UiManager {
       .setOrigin(0.5, 0).setScrollFactor(0).setDepth(1001).setVisible(false);
     this.center = scene.add.text(GAME_W / 2, 260, '', { ...ts, fontSize: '40px', align: 'center' })
       .setOrigin(0.5).setScrollFactor(0).setDepth(1002).setVisible(false);
-    this.grabPrompt = scene.add.text(GAME_W / 2, 200, 'つかまれた！ Z／X連打で脱出！', {
+    this.grabPrompt = scene.add.text(GAME_W / 2, 200, 'つかまれた！ パンチ／キック連打で脱出！', {
       ...ts, fontSize: '22px', color: '#ffea4d', backgroundColor: '#000000aa', padding: { x: 8, y: 4 },
     }).setOrigin(0.5).setScrollFactor(0).setDepth(1002).setVisible(false);
     this.bossHpRatio = -1;
