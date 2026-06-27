@@ -17,12 +17,15 @@
 ## 0. Codexへの渡し方・出力先（最初に読む）
 
 ### 保存先（種類で違う・重要）
-| 種類 | 保存先 | 理由 |
-|---|---|---|
-| **キャラの緑シート**（敵・ボス・弾・FX） | `public/assets/sprites/raw_generated/` | 緑のまま。**まだ最終フォルダに入れない**。Claude側が緑抜き＆分割して `extracted_v2/` へ移す |
-| **背景・タイトル**（不透明1枚絵） | `public/assets/sprites/background/`（`floor1.png`等） | 加工不要。そのまま配置＝今マップ等が出てる場所でOK |
+> 🚨 **作業リポジトリは必ず `~/Developer/games/ojisan-x`。他ゲーム（ojisan-quest 等）に保存しない。**
+>   出力先は下記の**フルパスで指定**すること（相対パスだけだと別repoに保存される事故が実際に起きた：baldがojisan-questに入った）。
 
-⚠️ 緑シートを `extracted_v2/` に直接入れると、緑背景の8枚並び画像が1キャラとして表示され壊れる。必ず `raw_generated/` へ。
+| 種類 | 保存先（フルパス） | 理由 |
+|---|---|---|
+| **キャラの緑シート**（主人公・敵・ボス・弾・FX） | `~/Developer/games/ojisan-x/public/assets/sprites/raw_generated/` | 緑のまま。**まだ最終フォルダに入れない**。Claude側が緑抜き＆分割して `extracted_v2/` へ移す |
+| **背景・タイトル**（不透明1枚絵） | `~/Developer/games/ojisan-x/public/assets/sprites/background/`（`floor1.png`等） | 加工不要。そのまま配置＝今マップ等が出てる場所でOK |
+
+⚠️ 緑シートを `extracted_v2/` に直接入れると、緑背景の並び画像が1キャラとして表示され壊れる。必ず `raw_generated/` へ。
 
 ### 発注は「グループ単位」で区切って出す（推奨・重要）
 一括（P0→P2を一気に）ではなく、**1グループずつ指示 → 納品確認 → 次**、で進める。
@@ -37,11 +40,12 @@
 
 **各グループはこのテンプレで指示（{ } を埋める）：**
 ```
+作業リポジトリは ~/Developer/games/ojisan-x （他ゲームに保存しないこと）。
 まず git pull で最新の docs/ORDER_PROMPTS_CODEX.md を取得（ローカルが最新ならスキップ）。
 そのうえで {対象セクション 例: P0-0（主人公・通常）} だけを生成してください。
-- キャラの緑シートは public/assets/sprites/raw_generated/ に「シート名_sheet.png」で保存
-- 背景の不透明1枚絵は public/assets/sprites/background/ に指定ファイル名で保存
-- 1枚ごとにファイル名を報告。緑が濁る/崩れる時はそのシートを作り直す
+- キャラの緑シートは ~/Developer/games/ojisan-x/public/assets/sprites/raw_generated/ に「シート名_sheet.png」で保存
+- 背景の不透明1枚絵は ~/Developer/games/ojisan-x/public/assets/sprites/background/ に指定ファイル名で保存
+- 1枚ごとにフルパスでファイル名を報告。緑が濁る/崩れる時はそのシートを作り直す
 - （主人公の時だけ）全シートで頭身・体の大きさ・足元位置を統一。可能ならA案シートを参照画像に
 このグループだけ。次のグループは私（人間）が改めて指示します。
 ```
@@ -173,7 +177,10 @@ NO characters, NO text, NO logos. Size 1536x864. Opaque full illustration (no tr
   - ※旧 ojisan-hop の bald 参照は**使わない**（画風が新主人公と別物のため。旧baldには「1/2」透かしも混入していた）。
 - ★**3枚すべてで人物の大きさ・足元位置を厳密に一致**させること（Claude側で3枚を1つの共通キャンバスに統合抽出するため、シート間で体格がズレると idle↔punch 等でガクつく）。
 - ★**文字・数字・コマ番号・透かし・ロゴを一切入れない**（旧素材で「1/2」混入の事故あり）。
-- 保存名：`bald_basic_sheet.png` / `bald_attack_sheet.png` / `bald_air_sheet.png`
+- ★**必ず「3枚の別々のシート・合計14コマ」**にすること（1枚にまとめない／6ポーズ等の独自構成にしない）。
+  **歩き4コマ・ジャンプ・落下も必ず含める**（前回 fury 6ポーズ1枚で歩き/ジャンプ欠落の事故あり）。
+- **出力先（必ずこのフルパス）**：`~/Developer/games/ojisan-x/public/assets/sprites/raw_generated/`
+  に `bald_basic_sheet.png` / `bald_attack_sheet.png` / `bald_air_sheet.png` の3ファイルで保存（他ゲームのrepoに入れない）。
 - 共通キャラ記述：
 ```
 The SAME "Ojisan" salaryman character as in the reference sheets (player_basic_sheet.png / player_attack_sheet.png):
