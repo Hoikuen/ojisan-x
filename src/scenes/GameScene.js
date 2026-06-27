@@ -35,9 +35,13 @@ export class GameScene extends Phaser.Scene {
     this.physics.world.setBounds(0, 0, this.worldW, GAME_H);
     this.physics.world.gravity.y = GRAVITY;
 
-    // 背景（ワールド幅にタイル）
-    this.add.tileSprite(0, 0, this.worldW, GAME_H, floor.background)
+    // 背景（ワールド幅にタイル）。画像は1536x864だが画面は600px高。
+    // デフォルトだと上600pxだけ表示され、画像下部の「地面帯」が画面外に切れて
+    // 主人公/敵が浮いて(埋まって)見える。tilePositionYで画像下端=地面を画面下端に合わせる。
+    const bg = this.add.tileSprite(0, 0, this.worldW, GAME_H, floor.background)
       .setOrigin(0, 0).setDepth(-10);
+    const bgTexH = this.textures.get(floor.background).getSourceImage().height;
+    bg.tilePositionY = Math.max(0, bgTexH - GAME_H);
 
     // 地面（不可視の静的ボディ。上端=FLOOR_Y）
     this.ground = this.add.rectangle(this.worldW / 2, FLOOR_Y + 40, this.worldW, 80, 0x000000, 0);

@@ -86,7 +86,8 @@ Solid flat pure green chroma-key background (#00FF00), no gradient/scenery/shado
   - **player_basic_sheet**（6コマ：idle_1, idle_2, walk_1, walk_2, walk_3, walk_4）
     `Poses: (1) idle standing relaxed; (2) idle slight breathing (shoulders a touch higher); (3-6) a 4-frame walk cycle (right foot fwd / passing / left foot fwd / passing).`
   - **player_attack_sheet**（6コマ：punch_1, punch_2, punch_3, kick_1, kick_2, kick_3）
-    `Poses: (1) punch wind-up; (2) punch full extension (briefcase/fist forward); (3) punch recover; (4) kick wind-up (leg back); (5) kick full extension (leg forward); (6) kick recover.`
+    ※キックは「一目で蹴りと分かる」明確なシルエットが必須（旧版は脚が曖昧で読みづらかったため差し替え）。
+    `Poses: (1) punch wind-up (fist pulled back to hip); (2) punch full extension (fist/briefcase thrust straight forward, arm fully extended); (3) punch recover; (4) kick chamber: standing on one leg, knee raised high to waist with foot tucked, clearly winding up; (5) kick full extension: a strong HORIZONTAL front kick — kicking leg fully straight and roughly parallel to the ground at waist height, sole/foot clearly leading in the facing direction, support leg planted, torso leaned slightly back for balance; there must be a clear gap between the extended leg and the body so the silhouette instantly reads as "a kick"; (6) kick recover (leg coming back down).`
   - **player_crouch_sheet**（5コマ：crouch_1, crouch_2, crouch_attack_1, crouch_attack_2, crouch_attack_3）
     `Poses: (1) crouch low guard; (2) crouch slight shift (still low); (3) crouch-attack wind-up low; (4) crouch-attack swing forward at ankle height; (5) crouch-attack recover. (Crouch poses are clearly lower/compact.)`
   - **player_air_sheet**（4コマ：jump, fall, jump_attack_1, jump_attack_2）
