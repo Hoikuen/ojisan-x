@@ -46,11 +46,11 @@ export const ENEMY = {
           tooClose: 140, throwMin: 140, throwMax: 420, throwCdMs: 1500,
           windupMs: 250, recoverMs: 300, highRatio: 0.5, contactDamage: 2, projDamage: 2,
           proj: 'projCard' },
-  // フルーツ眼鏡女子（遠距離・流用）。cardと同系だが単一throwテクスチャ
+  // フルーツ眼鏡女子（遠距離・流用）。cardと同系だが、弾は「蛾(projMoth)」を飛ばす
   fruit: { displayHeight: 145, hp: 2, speed: 90, score: 150,
            tooClose: 140, throwMin: 140, throwMax: 440, throwCdMs: 1600,
            windupMs: 250, recoverMs: 300, highRatio: 0.5, contactDamage: 2, projDamage: 2,
-           proj: 'projCard' },
+           proj: 'projMoth' },
   // ちびリーマン（小型・飛びかかり）
   chibi: { displayHeight: 110, hp: 1, speed: 150, score: 100,
            jumpRange: 200, leapCdMs: 1200, recoverMs: 500, leapVX: 240, leapVY: -360, contactDamage: 2 },

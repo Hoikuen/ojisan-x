@@ -87,7 +87,7 @@ export const IMAGES = {
   fruitThrow: `${S}/extracted_v2/schoolgirl_fix/throw.png`,
   fruitHurt: `${S}/extracted_v2/schoolgirl_fix/hurt.png`,
   // 敵：バナナ筋肉女子（F3・突進／流用。throwを突進ポーズに転用）
-  bananaIdle: `${S}/extracted_v2/gorilla_fix/idle.png`,
+  bananaIdle: `${S}/extracted_v2/gorilla_fix/walk_1.png`, // idle.pngが仮素材のためwalk_1で代用
   bananaWalk: `${S}/extracted_v2/gorilla_fix/walk_1.png`,
   bananaCharge: `${S}/extracted_v2/gorilla_fix/throw.png`,
   bananaHurt: `${S}/extracted_v2/gorilla_fix/hurt.png`,
@@ -116,7 +116,7 @@ export const IMAGES = {
   // 中ボス：大仏豚(F4・流用)
   buddhaIdle: `${S}/extracted_v2/boss/boss_idle.png`,
   buddhaAttack: `${S}/extracted_v2/boss/boss_attack.png`,
-  buddhaHurt: `${S}/extracted_v2/boss/boss_hurt.png`,
+  buddhaHurt: `${S}/extracted_v2/boss/boss_idle.png`, // boss_hurt.pngが仮素材のためidleで代用（被弾時は白点滅）
   buddhaDeath: `${S}/extracted_v2/boss/boss_pose_5.png`,
   // ボス：Mr.X(F5・ラスボス)
   mrxIdle: `${S}/extracted_v2/mrx/idle.png`,

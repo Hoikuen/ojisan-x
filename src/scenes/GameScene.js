@@ -67,6 +67,22 @@ export class GameScene extends Phaser.Scene {
       this.powerup.destroy();
     });
 
+    // 現金ピックアップ（拾うと加点）。floor.cashXs があれば優先、無ければworld幅から自動配置
+    this.cashItems = this.add.group();
+    const cashXs = floor.cashXs || [0.22, 0.45, 0.68].map((f) => Math.round(f * this.worldW));
+    for (const cx of cashXs) {
+      const cash = this.physics.add.image(cx, FLOOR_Y - 28, 'itemCash');
+      cash.body.setAllowGravity(false);
+      this.cashItems.add(cash);
+      this.tweens.add({ targets: cash, y: cash.y - 8, duration: 600, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+    }
+    this.physics.add.overlap(this.player, this.cashItems, (player, cash) => {
+      if (!cash.active) return;
+      this.score += SCORE.itemCash;
+      this._fxStar(cash.x, cash.y);
+      cash.destroy();
+    });
+
     // 衝突・当たり判定
     this.physics.add.collider(this.enemies, this.ground);
     this.physics.add.overlap(this.player.attackBox, this.enemies, this._hitEnemy, undefined, this);
@@ -280,10 +296,12 @@ export class GameScene extends Phaser.Scene {
 
   onEnemyDefeated(enemy) {
     this.score += enemy.cfg.score + SCORE.enemyBonus;
+    this._fxStar(enemy.x, enemy.y - 20);
   }
 
   onBossDefeated() {
     if (this.ending) return;
+    if (this.boss) this._fxStar(this.boss.x, this.boss.y - 30);
     this.mode = 'cleared';
     this.ui.hideBoss();
     this.ui.showCenter('FLOOR CLEAR!', 0);
@@ -333,6 +351,13 @@ export class GameScene extends Phaser.Scene {
   _fxHit(x, y) {
     const fx = this.add.image(x, y, 'fxHit').setDepth(900);
     this.tweens.add({ targets: fx, alpha: 0, scale: 1.4, duration: 180,
+      onComplete: () => fx.destroy() });
+  }
+
+  // 撃破・拾得時のキラ星演出
+  _fxStar(x, y) {
+    const fx = this.add.image(x, y, 'fxStar').setDepth(901);
+    this.tweens.add({ targets: fx, alpha: 0, scale: 1.9, angle: 80, duration: 450,
       onComplete: () => fx.destroy() });
   }
 
