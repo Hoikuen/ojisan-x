@@ -3,3 +3,6 @@ dist/
 .DS_Store
 .vite/
 npm-debug.log*
+
+# 抽出ツールの確認用プレビュー（公開物に含めない）
+**/_preview_checker.png
