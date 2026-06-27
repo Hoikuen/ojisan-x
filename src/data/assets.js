@@ -190,9 +190,9 @@ export const PLAYER_ANIMS = {
     walk:         { key: 'anim_pn_walk',  frames: ['playerWalk1', 'playerWalk2', 'playerWalk3', 'playerWalk4'], frameRate: 8, repeat: -1 },
     // punch_1=構え→punch_2=突き(frame2)で終わる。punch_3(frame3)は戻し動作なので外す（当てポーズを保持）
     punch:        { key: 'anim_pn_punch', frames: ['playerPunch1', 'playerPunch2'], frameRate: 14, repeat: 0 },
-    // kick_1=踏み込み→kick_2=蹴り(frame5)で終わる。kick_3(frame6)は脚を下ろす弱い後動作なので外す
-    // （末尾フレームが静止保持されるため、明確な蹴り=kick_2 を最後に残す）
-    kick:         { key: 'anim_pn_kick',  frames: ['playerKick1', 'playerKick2'], frameRate: 14, repeat: 0 },
+    // kick_2（蹴り当てコマ）だけ残す。1コマ→アニメ未生成→静止画フォールバック(PLAYER_TEX.kick=playerKick2)
+    // これにより攻撃全180msでkick_2を表示。kick_1(踏み込み)を見せると「蹴ってない」と誤認されるため省く。
+    kick:         { key: 'anim_pn_kick',  frames: ['playerKick2'], frameRate: 14, repeat: 0 },
     crouch:       { key: 'anim_pn_crch',  frames: ['playerCrouch1', 'playerCrouch2'], frameRate: 4, repeat: -1 },
     // catk_1=構え→catk_2=当て(frame4・インパクト有)で終わる。catk_3(戻し)は外す
     crouchAttack: { key: 'anim_pn_catk',  frames: ['playerCrouchAtk1', 'playerCrouchAtk2'], frameRate: 14, repeat: 0 },
