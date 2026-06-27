@@ -116,6 +116,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
         const py = high ? this.y - 30 : this.y + 20;
         const proj = new Projectile(this.scene, this.x + dir * 30, py, c.proj || 'projCard', dir, high ? 'high' : 'low');
         this.scene.projectiles.add(proj);
+        this.scene.sfx?.('throw');
       });
       this.nextActAt = now + c.throwCdMs;
       this.recoverUntil = now + c.windupMs + c.recoverMs;

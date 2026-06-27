@@ -134,6 +134,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     if (t.jumpQueued) { jumpPressed = true; t.jumpQueued = false; }
     if (jumpPressed && this.grounded && this._canAct()) {
       this.setVelocityY(PLAYER.jumpForce);
+      this.scene.sfx?.('jump');
     }
 
     // 攻撃入力（Xまたはキックボタンならキック）
@@ -185,6 +186,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.attackBox.score = def.score;
     this._attackDef = def;
     this.setPlayerState(stateName);
+    this.scene.sfx?.(kind === 'punch' ? 'punch' : 'kick');
 
     // ハゲ化中はビームを撃つ（遠距離攻撃。近接判定も同時に出る）
     if (this.powered && now >= this.beamCdUntil && this.scene.fireBeam) {
@@ -223,6 +225,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     this.setVelocity(FEEL.knockPlayerX * dir, FEEL.knockPlayerY);
     this.invincibleUntil = this.scene.time.now + PLAYER.invincibleMs;
     this.scene.cameras.main.shake(FEEL.shakeHurtMs, FEEL.shakeHurt);
+    this.scene.sfx?.('hurt');
     if (this.hp <= 0) this.die();
     else { this.setPlayerState('hurt'); this._blink(); }
   }

@@ -32,6 +32,11 @@ export class GameScene extends Phaser.Scene {
     this.wavesSpawned = new Set();
     this.boss = null;
 
+    // 音（SE＋ループBGM）。Mキーでミュート切替（localStorage保存）
+    this.muted = localStorage.getItem('ojisanx_muted') === '1';
+    this._startBgm();
+    this.input.keyboard.on('keydown-M', () => this._toggleMute());
+
     this.physics.world.setBounds(0, 0, this.worldW, GAME_H);
     this.physics.world.gravity.y = GRAVITY;
 
@@ -63,6 +68,7 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.overlap(this.player, this.powerup, () => {
       if (!this.powerup.active) return;
       this.player.powerUp();
+      this.sfx('powerup');
       this.ui.showCenter('ブチギレ！！', 800);
       this.powerup.destroy();
     });
@@ -80,6 +86,7 @@ export class GameScene extends Phaser.Scene {
       if (!cash.active) return;
       this.score += SCORE.itemCash;
       this._fxStar(cash.x, cash.y);
+      this.sfx('cash');
       cash.destroy();
     });
 
@@ -217,6 +224,7 @@ export class GameScene extends Phaser.Scene {
   fireBeam(x, y, dir) {
     const beam = new Beam(this, x, y, dir);
     this.playerBeams.add(beam);
+    this.sfx('beam');
   }
 
   _beamHitEnemy(beam, enemy) {
@@ -297,11 +305,13 @@ export class GameScene extends Phaser.Scene {
   onEnemyDefeated(enemy) {
     this.score += enemy.cfg.score + SCORE.enemyBonus;
     this._fxStar(enemy.x, enemy.y - 20);
+    this.sfx('enemy_down');
   }
 
   onBossDefeated() {
     if (this.ending) return;
     if (this.boss) this._fxStar(this.boss.x, this.boss.y - 30);
+    this.sfx('boss_down');
     this.mode = 'cleared';
     this.ui.hideBoss();
     this.ui.showCenter('FLOOR CLEAR!', 0);
@@ -359,6 +369,27 @@ export class GameScene extends Phaser.Scene {
     const fx = this.add.image(x, y, 'fxStar').setDepth(901);
     this.tweens.add({ targets: fx, alpha: 0, scale: 1.9, angle: 80, duration: 450,
       onComplete: () => fx.destroy() });
+  }
+
+  // --- 音 ---
+  sfx(key, vol = 1) {
+    if (this.muted || !this.cache.audio.exists(key)) return;
+    this.sound.play(key, { volume: 0.5 * vol });
+  }
+
+  _startBgm() {
+    if (this.bgm) { this.bgm.stop(); this.bgm.destroy(); }
+    if (!this.cache.audio.exists('bgm_main')) return;
+    this.bgm = this.sound.add('bgm_main', { loop: true, volume: this.muted ? 0 : 0.2 });
+    this.bgm.play();
+    this.events.once('shutdown', () => { if (this.bgm) this.bgm.stop(); });
+  }
+
+  _toggleMute() {
+    this.muted = !this.muted;
+    localStorage.setItem('ojisanx_muted', this.muted ? '1' : '0');
+    if (this.bgm) this.bgm.setVolume(this.muted ? 0 : 0.2);
+    this.ui.showCenter(this.muted ? 'MUTE' : 'SOUND ON', 600);
   }
 
   _hitStop(ms) {

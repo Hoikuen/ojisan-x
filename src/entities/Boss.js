@@ -137,6 +137,7 @@ export class Boss extends Phaser.Physics.Arcade.Sprite {
           { speed: a.speed, damage: a.damage, returnAfterMs: a.returnAfterMs,
             transformTo: a.transformTo, transformAfterMs: a.transformAfterMs });
         this.scene.projectiles.add(proj);
+        this.scene.sfx?.('throw');
       });
     } else if (a.kind === 'charge') {
       this.scene.time.delayedCall(a.windupMs, () => {

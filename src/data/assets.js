@@ -145,6 +145,22 @@ export const IMAGES = {
   bgFloor5: `${S}/background/floor5.png`,
 };
 
+// 音（合成生成の仮音源。tools/gen_audio.py で再生成可。差し替え自由）
+const A = 'assets/audio';
+export const SOUNDS = {
+  jump: `${A}/jump.wav`,
+  punch: `${A}/punch.wav`,
+  kick: `${A}/kick.wav`,
+  hurt: `${A}/hurt.wav`,
+  enemy_down: `${A}/enemy_down.wav`,
+  boss_down: `${A}/boss_down.wav`,
+  powerup: `${A}/powerup.wav`,
+  cash: `${A}/cash.wav`,
+  throw: `${A}/throw.wav`,
+  beam: `${A}/beam.wav`,
+  bgm_main: `${A}/bgm_main.wav`,
+};
+
 // 状態→テクスチャキー（静止画フォールバック）。
 // アニメ(PLAYER_ANIMS)のコマが2枚未満しか無い状態だけ、ここの1枚絵が使われる。
 // 各stateはアニメの先頭コマを指す（コマが1枚も無くても必ず表示できる）。

@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { IMAGES, PLAYER_ANIMS } from '../data/assets.js';
+import { IMAGES, SOUNDS, PLAYER_ANIMS } from '../data/assets.js';
 import { GAME_W, GAME_H } from '../constants.js';
 
 export class BootScene extends Phaser.Scene {
@@ -19,7 +19,10 @@ export class BootScene extends Phaser.Scene {
     for (const [key, path] of Object.entries(IMAGES)) {
       this.load.image(key, path);
     }
-    // 音はAUDIO_PLAN手配後にここへ追加（this.load.audio(...)）
+    // 音（SE＋BGM）。合成生成の仮音源
+    for (const [key, path] of Object.entries(SOUNDS)) {
+      this.load.audio(key, path);
+    }
   }
 
   create() {

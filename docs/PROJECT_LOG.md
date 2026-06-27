@@ -108,3 +108,12 @@ Codex納品分を抽出・配線してゲームに反映し、**push＝GitHub Pa
 - 修正(assets.js)：normalの punch/kick/crouchAttack のアニメから**戻しコマ(_3)を除去**して当てコマで終わるようにし、PLAYER_TEXの静止フォールバックも当てコマ(playerPunch2/playerKick2/playerCrouchAtk2)へ変更。frameRateを14に。
   - キック当て=kick_2(元シートframe5)、パンチ当て=punch_2(frame2)、しゃがみ攻撃当て=crouch_attack_2(frame4・黄インパクト)。実機トレースで `punch:playerPunch2 / kick:playerKick2 / crouchAttack:playerCrouchAtk2` 保持を確認。
   - jumpAttackは元々2コマで当てコマ終わりのため変更不要。**アート再発注は不要だった**（絵は良かった）。
+
+### 7. イラスト納品待ちの間の「絵以外」一括対応（同日・その5）
+- **幽霊アセット3点を配線**（絵はあったが未使用だったもの）：
+  - 蛾(projMoth)＝フルーツ眼鏡女子(F4)の弾に（`ENEMY.fruit.proj`）。
+  - 星FX(fxStar)＝敵/ボス撃破時・現金拾得時に表示（`GameScene._fxStar`）。
+  - 現金(itemCash)＝各フロアにworld幅の22/45/68%で自動配置→拾うと+1000点（`floor.cashXs`で上書き可）。
+- **流用キャラの壊れフレーム差し替え**：banana idle(仮)→`gorilla_fix/walk_1`、buddha hurt(仮)→`boss/boss_idle`（assets.jsのパス変更のみ）。
+- **音(SE＋BGM)を新規実装**：`tools/gen_audio.py`で波形合成した仮音源を`public/assets/audio/`に生成（SE10種＋ループBGM1）。`assets.js`の`SOUNDS`→BootSceneでロード→`GameScene.sfx()`/`_startBgm()`で再生。発音箇所＝ジャンプ/パンチ/キック/被弾/敵撃破/ボス撃破/パワーアップ/現金/投擲/ビーム。**Mキーでミュート**（localStorage保存）。実機トレースで全11音ロード・BGM再生・エラー0を確認。
+- 18テスト緑維持。**残り**：旧ゴミ11ファイル整理（サンドボックスのrm制約で保留中）、bald納品待ち、流用3体の本発注（任意）、音は本物素材への差し替え推奨。
