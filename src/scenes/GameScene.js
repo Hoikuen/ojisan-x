@@ -318,8 +318,15 @@ export class GameScene extends Phaser.Scene {
     this.ui.hideBoss();
     const bonus = Math.ceil(this.timeLeft) * SCORE.timeBonusPerSec + SCORE.bossClear;
     this.score += bonus;
+    // ボス戦中の残弾を全て消去（ブーメラン等が残って退職金回収を妨害しないように）
+    this.projectiles.getChildren().slice().forEach((p) => { if (p.active) p.destroy(); });
     // ボス本体をフェードアウト（白い残骸を残さない）→ 退職金ドロップを落とす
-    const dropX = this.boss ? Phaser.Math.Clamp(this.boss.x, 140, this.worldW - 140) : this.player.x + 100;
+    // プレイヤーとボスの中間に落とす（ボスが端に寄っていても拾いやすい位置）
+    const bossRoomLeft = this.worldW - 800;
+    const midX = bossRoomLeft + 400; // ボス部屋の中央
+    const dropX = this.boss
+      ? Phaser.Math.Clamp((this.boss.x + this.player.x) / 2, bossRoomLeft + 100, this.worldW - 100)
+      : midX;
     if (this.boss) {
       this._fxStar(this.boss.x, this.boss.y - 30);
       const b = this.boss; this.boss = null;

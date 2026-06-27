@@ -15,17 +15,17 @@ export class TouchControls {
     // 同時タッチを許可（移動＋ジャンプ＋攻撃を同時に）
     scene.input.addPointer(3);
 
-    const R = 40;
-    const y1 = GAME_H - 60;
-    const y2 = GAME_H - 140;
+    const R = 52;          // 大きめに（スマホ実寸で直径68px相当）
+    const y1 = GAME_H - 65;  // 下段
+    const y2 = GAME_H - 168; // 上段（ジャンプ）
     // 左側：移動
-    this._held('←', 70, y1, R, 'left');
-    this._held('→', 165, y1, R, 'right');
-    this._held('↓', 117, y2, R, 'down');
-    // 右側：ジャンプ・攻撃
-    this._jump('JUMP', GAME_W - 70, y1, R);
-    this._attack('パンチ', GAME_W - 165, y1, R, false);
-    this._attack('キック', GAME_W - 117, y2, R, true);
+    this._held('←', 65, y1, R, 'left');
+    this._held('→', 182, y1, R, 'right');
+    this._held('↓', 123, y2, R, 'down');
+    // 右側：パンチ・キック(下段)、JUMP(上段・中央)
+    this._attack('パンチ', GAME_W - 182, y1, R, false);
+    this._attack('キック', GAME_W - 65, y1, R, true);
+    this._jump('JUMP', GAME_W - 123, y2, R);
   }
 
   _circle(label, x, y, r) {
