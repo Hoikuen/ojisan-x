@@ -32,6 +32,9 @@ def main():
     ap.add_argument('--out', required=True)
     ap.add_argument('--frames', required=True)
     ap.add_argument('--max-h', type=int, default=320, help='共通キャンバス高さ上限(縮小)')
+    ap.add_argument('--cuts', default='', help='手動カット位置(カンマ区切り,N+1個)。傘等が均等分割で切れる時に指定')
+    ap.add_argument('--keep-largest', action='store_true',
+                    help='各コマで最大連結成分のみ残す（隣コマの紛れ込み小片を除去）。本体が1塊のキャラ向け')
     ap.add_argument('--root', default=os.getcwd())
     a = ap.parse_args()
     names = [s.strip() for s in a.frames.split(',') if s.strip()]
@@ -40,19 +43,35 @@ def main():
     H,W,_ = arr.shape
     alpha = arr[...,3]
     colink = (alpha>16).sum(axis=0)
-    xs = np.where(colink > max(2, colink.max()*0.02))[0]
-    x0,x1 = int(xs[0]), int(xs[-1])+1
-    span = x1-x0
-    # 均等目安境界の近傍で最小インク列を切れ目に
-    cuts=[x0]
-    for i in range(1,N):
-        target = x0 + span*i/N
-        half = span/(2*N)*0.85
-        lo,hi = int(max(x0+1,target-half)), int(min(x1-1,target+half))
-        win = colink[lo:hi]
-        cut = lo + int(np.argmin(win)) if len(win)>0 else int(target)
-        cuts.append(cut)
-    cuts.append(x1)
+    if a.cuts.strip():
+        cuts = [int(s) for s in a.cuts.split(',')]
+        assert len(cuts) == N+1, f'--cuts は {N+1} 個必要（実際 {len(cuts)}）'
+    else:
+        xs = np.where(colink > max(2, colink.max()*0.02))[0]
+        x0,x1 = int(xs[0]), int(xs[-1])+1
+        span = x1-x0
+        # 均等目安境界の近傍で最小インク列を切れ目に
+        cuts=[x0]
+        for i in range(1,N):
+            target = x0 + span*i/N
+            half = span/(2*N)*0.85
+            lo,hi = int(max(x0+1,target-half)), int(min(x1-1,target+half))
+            win = colink[lo:hi]
+            cut = lo + int(np.argmin(win)) if len(win)>0 else int(target)
+            cuts.append(cut)
+        cuts.append(x1)
+    # 必要なら各セルで最大連結成分のみ残す（隣コマの足・傘先などの紛れ込みを除去）
+    if a.keep_largest:
+        import cv2
+        for i in range(N):
+            cx0,cx1 = cuts[i],cuts[i+1]
+            cell = arr[:,cx0:cx1]
+            m = (cell[...,3]>16).astype(np.uint8)
+            ncomp,lab,stats,_ = cv2.connectedComponentsWithStats(m,connectivity=8)
+            if ncomp>2:  # 背景＋2塊以上 → 最大塊以外を消す
+                biggest = 1+int(np.argmax(stats[1:,cv2.CC_STAT_AREA]))
+                cell[lab!=biggest] = 0
+        alpha = arr[...,3]
     # 各セグメントの内容bboxを取る
     boxes=[]
     for i in range(N):
