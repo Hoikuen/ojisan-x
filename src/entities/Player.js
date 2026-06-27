@@ -256,9 +256,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  powerUp() {
+  powerUp(ms) {
     this.powered = true;
-    this.poweredUntil = this.scene.time.now + POWERUP.durationMs;
+    // msを渡すとその残り時間で発動（フロア跨ぎの引き継ぎ用）。通常は規定時間
+    this.poweredUntil = this.scene.time.now + (ms || POWERUP.durationMs);
     // つかまれ中ならハゲ化で振りほどく（無敵＝つかまれない不変条件を保つ）
     if (this.state === 'grabbed') {
       const g = this.grabbedBy;

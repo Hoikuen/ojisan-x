@@ -19,6 +19,7 @@ export class GameScene extends Phaser.Scene {
     this.floorId = data.floorId || 1;
     this.startScore = data.score || 0;
     this.lives = data.lives === undefined ? LIVES.start : data.lives;
+    this.startPoweredMs = data.poweredMs || 0; // 前フロアから引き継ぐハゲ化の残り時間
   }
 
   create() {
@@ -61,6 +62,8 @@ export class GameScene extends Phaser.Scene {
     this.player = new Player(this, 100, FLOOR_Y - PLAYER.displayHeight / 2);
     this.player.body.reset(100, FLOOR_Y - PLAYER.displayHeight / 2);
     this.physics.add.collider(this.player, this.ground);
+    // 前フロアでハゲ化中だったら引き継ぐ（残り時間で発動）
+    if (this.startPoweredMs > 0) this.player.powerUp(this.startPoweredMs);
 
     // ハゲ化アイテム（ボス手前に固定配置）
     this.powerup = this.physics.add.image(floor.powerupX, FLOOR_Y - 30, 'itemPowerup');
@@ -69,7 +72,7 @@ export class GameScene extends Phaser.Scene {
       if (!this.powerup.active) return;
       this.player.powerUp();
       this.sfx('powerup');
-      this.ui.showCenter('ブチギレ！！', 800);
+      this.ui.showCenter('ハゲまくり！！', 800);
       this.powerup.destroy();
     });
 
@@ -309,24 +312,57 @@ export class GameScene extends Phaser.Scene {
   }
 
   onBossDefeated() {
-    if (this.ending) return;
-    if (this.boss) this._fxStar(this.boss.x, this.boss.y - 30);
+    if (this.ending || this.mode === 'cleared') return;
     this.sfx('boss_down');
     this.mode = 'cleared';
     this.ui.hideBoss();
-    this.ui.showCenter('FLOOR CLEAR!', 0);
     const bonus = Math.ceil(this.timeLeft) * SCORE.timeBonusPerSec + SCORE.bossClear;
     this.score += bonus;
-    this.time.delayedCall(1800, () => this._advanceFloor());
+    // ボス本体をフェードアウト（白い残骸を残さない）→ 退職金ドロップを落とす
+    const dropX = this.boss ? Phaser.Math.Clamp(this.boss.x, 140, this.worldW - 140) : this.player.x + 100;
+    if (this.boss) {
+      this._fxStar(this.boss.x, this.boss.y - 30);
+      const b = this.boss; this.boss = null;
+      this.tweens.add({ targets: b, alpha: 0, duration: 600, onComplete: () => b.destroy() });
+    }
+    this._spawnRetirementDrop(dropX);
+    this.ui.showCenter('退職金を回収せよ！', 0);
+  }
+
+  // ボスが落とす退職金。拾うと次フロアへ
+  _spawnRetirementDrop(x) {
+    const drop = this.physics.add.image(x, FLOOR_Y - 40, 'itemCash').setScale(1.7).setDepth(10);
+    drop.body.setAllowGravity(false);
+    this.tweens.add({ targets: drop, y: drop.y - 14, duration: 520, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+    this.tweens.add({ targets: drop, scaleX: 1.95, scaleY: 1.95, duration: 650, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+    this._retireDrop = drop;
+    this.physics.add.overlap(this.player, drop, () => this._collectRetirement());
+    // 安全策：万一回収できなくても15秒で自動進行（ソフトロック防止）
+    this.time.delayedCall(15000, () => this._collectRetirement());
+  }
+
+  _collectRetirement() {
+    if (this._retired) return;
+    this._retired = true;
+    if (this._retireDrop) { this._retireDrop.destroy(); this._retireDrop = null; }
+    this.sfx('cash');
+    this.score += SCORE.itemCash;
+    this._fxStar(this.player.x, this.player.y - 30);
+    this.ui.showCenter('FLOOR CLEAR!', 900);
+    this.time.delayedCall(800, () => this._advanceFloor());
   }
 
   onPlayerDead() { this._loseLife('hp'); }
 
   _advanceFloor() {
+    if (this._advancing) return;
+    this._advancing = true;
     const next = getFloor(this.floorId + 1);
+    // ハゲ化中ならその残り時間を次フロアへ引き継ぐ
+    const poweredMs = this.player.powered ? Math.max(0, this.player.poweredUntil - this.time.now) : 0;
     // 次フロアが実装済み（スタブでない）なら進む。なければクリア扱い（vertical slice完了）。
     if (next && next.id === this.floorId + 1 && !next.stub) {
-      this.scene.start('GameScene', { floorId: next.id, score: this.score, lives: this.lives });
+      this.scene.start('GameScene', { floorId: next.id, score: this.score, lives: this.lives, poweredMs });
     } else {
       this._end('cleared');
     }
