@@ -118,6 +118,9 @@ export class GameScene extends Phaser.Scene {
     this.keySpace2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     this.paused = false;
+    this._retired = false;
+    this._retireDrop = null;
+    this._advancing = false;
   }
 
   update(time, delta) {
