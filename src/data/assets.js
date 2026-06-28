@@ -95,10 +95,10 @@ export const IMAGES = {
   fruitWalk: `${S}/extracted_v2/fruit/walk_1.png`,
   fruitThrow: `${S}/extracted_v2/fruit/throw.png`,
   fruitHurt: `${S}/extracted_v2/fruit/hurt.png`,
-  // 敵：バナナ筋肉女子（F3・突進）
+  // 敵：バナナゴリラ（F3・バナナ投げ）。新イラスト届くまで throw は charge 流用
   bananaIdle: `${S}/extracted_v2/banana/idle.png`,
   bananaWalk: `${S}/extracted_v2/banana/walk_1.png`,
-  bananaCharge: `${S}/extracted_v2/banana/charge.png`,
+  bananaThrow: `${S}/extracted_v2/banana/charge.png`,
   bananaHurt: `${S}/extracted_v2/banana/hurt.png`,
   // ボス：傘おじさん(F1)
   umbrellaIdle: `${S}/extracted_v2/umbrella/idle.png`,
@@ -135,6 +135,7 @@ export const IMAGES = {
   mrxHurt: `${S}/extracted_v2/mrx/hurt.png`,
   mrxDeath: `${S}/extracted_v2/mrx/death.png`,
   // 弾・FX・アイテム
+  projBanana: `${S}/proj/banana.png`,  // 新イラスト届くまで card を流用（BootSceneで差し替え）
   projCard: `${S}/proj/card.png`,
   projFile: `${S}/proj/file.png`,
   projFireball: `${S}/proj/fireball.png`,

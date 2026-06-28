@@ -54,9 +54,11 @@ export const ENEMY = {
   // ちびリーマン（小型・飛びかかり）
   chibi: { displayHeight: 110, hp: 1, speed: 150, score: 100,
            jumpRange: 200, leapCdMs: 1200, recoverMs: 500, leapVX: 240, leapVY: -360, contactDamage: 2 },
-  // バナナ筋肉女子（突進・流用）
-  banana: { displayHeight: 145, hp: 3, speed: 120, score: 200,
-            chargeRange: 320, windupMs: 350, recoverMs: 600, chargeSpeed: 360, contactDamage: 3 },
+  // バナナゴリラ（遠距離・バナナ投げ）
+  banana: { displayHeight: 160, hp: 3, speed: 100, score: 200,
+            tooClose: 140, throwMin: 150, throwMax: 480, throwCdMs: 2000,
+            windupMs: 400, recoverMs: 500, highRatio: 0.4, contactDamage: 2, projDamage: 3,
+            proj: 'projBanana' },
 };
 
 export const BOSS = {

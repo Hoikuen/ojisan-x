@@ -10,7 +10,8 @@ const TEX = {
   fruit: { idle: 'fruitIdle', walk: 'fruitWalk', throwHigh: 'fruitThrow', throwLow: 'fruitThrow',
            hurt: 'fruitHurt' }, // deadは無し→hurtにフォールバック
   chibi: { idle: 'chibiIdle', walk: 'chibiIdle', jump: 'chibiJump', hurt: 'chibiHurt', dead: 'chibiDeath' },
-  banana: { idle: 'bananaIdle', walk: 'bananaWalk', charge: 'bananaCharge', hurt: 'bananaHurt' }, // deadは無し→hurt
+  banana: { idle: 'bananaIdle', walk: 'bananaWalk', throwHigh: 'bananaThrow', throwLow: 'bananaThrow',
+           hurt: 'bananaHurt' }, // deadは無し→hurt。throwは新イラスト届くまでchargeを流用
 };
 
 export class Enemy extends Phaser.Physics.Arcade.Sprite {
@@ -52,8 +53,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     if (now < this.recoverUntil) { if (this.grounded) this.setVelocityX(this.type === 'chibi' ? this.body.velocity.x : 0); return; }
     if (this.type === 'hug') this._updateHug(now, dist, dir, p);
     else if (this.type === 'chibi') this._updateChibi(now, dist, dir, p);
-    else if (this.type === 'banana') this._updateBanana(now, dist, dir, p);
-    else this._updateRanged(now, dist, dir, p); // card / fruit
+    else this._updateRanged(now, dist, dir, p); // card / fruit / banana
   }
 
   get grounded() { return this.body.blocked.down || this.body.onFloor(); }
