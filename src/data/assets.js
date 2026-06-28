@@ -98,7 +98,7 @@ export const IMAGES = {
   // 敵：バナナゴリラ（F3・バナナ投げ）。新イラスト届くまで throw は charge 流用
   bananaIdle: `${S}/extracted_v2/banana/idle.png`,
   bananaWalk: `${S}/extracted_v2/banana/walk_1.png`,
-  bananaThrow: `${S}/extracted_v2/banana/charge.png`,
+  bananaThrow: `${S}/extracted_v2/banana/throw.png`,
   bananaHurt: `${S}/extracted_v2/banana/hurt.png`,
   // ボス：傘おじさん(F1)
   umbrellaIdle: `${S}/extracted_v2/umbrella/idle.png`,
