@@ -63,6 +63,15 @@ export const IMAGES = {
   baldFall: `${S}/extracted_v2/player_bald/fall.png`,
   baldHurt1: `${S}/extracted_v2/player_bald/hurt_1.png`,
   baldHurt2: `${S}/extracted_v2/player_bald/hurt_2.png`,
+  // ハゲ化補完（P3-0）
+  baldCrouch1: `${S}/extracted_v2/player_bald/crouch_1.png`,
+  baldCrouch2: `${S}/extracted_v2/player_bald/crouch_2.png`,
+  baldJumpAtk1: `${S}/extracted_v2/player_bald/jump_attack_1.png`,
+  baldJumpAtk2: `${S}/extracted_v2/player_bald/jump_attack_2.png`,
+  baldGrabbed1: `${S}/extracted_v2/player_bald/grabbed_1.png`,
+  baldGrabbed2: `${S}/extracted_v2/player_bald/grabbed_2.png`,
+  baldDead1: `${S}/extracted_v2/player_bald/dead_1.png`,
+  baldDead2: `${S}/extracted_v2/player_bald/dead_2.png`,
   // 敵：ハグ魔
   hugIdle: `${S}/extracted_v2/hug/idle.png`,
   hugWalk: `${S}/extracted_v2/hug/walk.png`,
@@ -86,11 +95,11 @@ export const IMAGES = {
   fruitWalk: `${S}/extracted_v2/schoolgirl_fix/walk_1.png`,
   fruitThrow: `${S}/extracted_v2/schoolgirl_fix/throw.png`,
   fruitHurt: `${S}/extracted_v2/schoolgirl_fix/hurt.png`,
-  // 敵：バナナ筋肉女子（F3・突進／流用。throwを突進ポーズに転用）
-  bananaIdle: `${S}/extracted_v2/gorilla_fix/walk_1.png`, // idle.pngが仮素材のためwalk_1で代用
-  bananaWalk: `${S}/extracted_v2/gorilla_fix/walk_1.png`,
-  bananaCharge: `${S}/extracted_v2/gorilla_fix/throw.png`,
-  bananaHurt: `${S}/extracted_v2/gorilla_fix/hurt.png`,
+  // 敵：バナナ筋肉女子（F3・突進）
+  bananaIdle: `${S}/extracted_v2/banana/idle.png`,
+  bananaWalk: `${S}/extracted_v2/banana/walk_1.png`,
+  bananaCharge: `${S}/extracted_v2/banana/charge.png`,
+  bananaHurt: `${S}/extracted_v2/banana/hurt.png`,
   // ボス：傘おじさん(F1)
   umbrellaIdle: `${S}/extracted_v2/umbrella/idle.png`,
   umbrellaThrust: `${S}/extracted_v2/umbrella/thrust.png`,
@@ -173,9 +182,9 @@ export const PLAYER_TEX = {
   },
   bald: {
     idle: 'baldIdle1', walk: 'baldWalk1', jump: 'baldJump', fall: 'baldFall',
-    crouch: 'baldIdle1', punch: 'baldPunch1', kick: 'baldKick1',
-    crouchAttack: 'baldPunch1', jumpAttack: 'baldKick1',
-    grabbed: 'baldHurt1', hurt: 'baldHurt1', dead: 'baldHurt1',
+    crouch: 'baldCrouch1', punch: 'baldPunch1', kick: 'baldKick1',
+    crouchAttack: 'baldPunch1', jumpAttack: 'baldJumpAtk1',
+    grabbed: 'baldGrabbed1', hurt: 'baldHurt1', dead: 'baldDead1',
   },
 };
 
@@ -207,7 +216,10 @@ export const PLAYER_ANIMS = {
     walk:  { key: 'anim_pb_walk',  frames: ['baldWalk1', 'baldWalk2', 'baldWalk3', 'baldWalk4'], frameRate: 9, repeat: -1 },
     punch: { key: 'anim_pb_punch', frames: ['baldPunch1', 'baldPunch2'], frameRate: 20, repeat: 0 },
     kick:  { key: 'anim_pb_kick',  frames: ['baldKick1', 'baldKick2'], frameRate: 20, repeat: 0 },
-    hurt:  { key: 'anim_pb_hurt',  frames: ['baldHurt1', 'baldHurt2'], frameRate: 12, repeat: 0 },
-    // crouch/jumpAttack/grabbed/dead は bald 用アニメ無し → PLAYER_TEX.bald の静止画にフォールバック
+    hurt:       { key: 'anim_pb_hurt',  frames: ['baldHurt1', 'baldHurt2'],   frameRate: 12, repeat: 0 },
+    crouch:     { key: 'anim_pb_crch',  frames: ['baldCrouch1', 'baldCrouch2'], frameRate: 4, repeat: -1 },
+    jumpAttack: { key: 'anim_pb_jatk',  frames: ['baldJumpAtk1', 'baldJumpAtk2'], frameRate: 14, repeat: 0 },
+    grabbed:    { key: 'anim_pb_grab',  frames: ['baldGrabbed1', 'baldGrabbed2'], frameRate: 6, repeat: -1 },
+    dead:       { key: 'anim_pb_dead',  frames: ['baldDead1', 'baldDead2'],   frameRate: 8, repeat: 0 },
   },
 };

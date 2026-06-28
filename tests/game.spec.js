@@ -162,17 +162,18 @@ test('攻撃アニメ：パンチでワンショット punch アニメ(repeat:0)
   expect(a.repeat).toBe(0);                     // ワンショット（攻撃は1回再生）
 });
 
-test('全アニメ生成：通常9種＋ハゲ化5種のアニメが揃って作られている', async ({ page }) => {
+test('全アニメ生成：通常9種＋ハゲ化9種のアニメが揃って作られている', async ({ page }) => {
   await startGame(page);
   const got = await page.evaluate(() => {
     const an = window.__game.scene.getScene('GameScene').anims;
     // anim_pn_kick は kick_2 静止画表示に変更したため1コマ→アニメ未生成（意図的）
     const keys = ['anim_pn_idle','anim_pn_walk','anim_pn_punch','anim_pn_crch',
       'anim_pn_catk','anim_pn_jatk','anim_pn_grab','anim_pn_hurt','anim_pn_dead',
-      'anim_pb_idle','anim_pb_walk','anim_pb_punch','anim_pb_kick','anim_pb_hurt'];
+      'anim_pb_idle','anim_pb_walk','anim_pb_punch','anim_pb_kick','anim_pb_hurt',
+      'anim_pb_crch','anim_pb_jatk','anim_pb_grab','anim_pb_dead'];
     return keys.filter((k) => an.exists(k));
   });
-  expect(got).toHaveLength(14);                 // 全アニメがコマ揃いで生成済み
+  expect(got).toHaveLength(18);                 // 全アニメがコマ揃いで生成済み
 });
 
 test('ハゲ化アニメ：パワーアップ後も歩くと bald walk アニメになる', async ({ page }) => {
