@@ -90,11 +90,11 @@ export const IMAGES = {
   chibiJump: `${S}/extracted_v2/chibi/jump.png`,
   chibiHurt: `${S}/extracted_v2/chibi/hurt.png`,
   chibiDeath: `${S}/extracted_v2/chibi/death.png`,
-  // 敵：フルーツ眼鏡女子（F4・遠距離／流用）
-  fruitIdle: `${S}/extracted_v2/schoolgirl_fix/idle.png`,
-  fruitWalk: `${S}/extracted_v2/schoolgirl_fix/walk_1.png`,
-  fruitThrow: `${S}/extracted_v2/schoolgirl_fix/throw.png`,
-  fruitHurt: `${S}/extracted_v2/schoolgirl_fix/hurt.png`,
+  // 敵：フルーツ眼鏡女子（F4・F5・遠距離）
+  fruitIdle: `${S}/extracted_v2/fruit/idle.png`,
+  fruitWalk: `${S}/extracted_v2/fruit/walk_1.png`,
+  fruitThrow: `${S}/extracted_v2/fruit/throw.png`,
+  fruitHurt: `${S}/extracted_v2/fruit/hurt.png`,
   // 敵：バナナ筋肉女子（F3・突進）
   bananaIdle: `${S}/extracted_v2/banana/idle.png`,
   bananaWalk: `${S}/extracted_v2/banana/walk_1.png`,
