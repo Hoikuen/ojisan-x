@@ -114,7 +114,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       this.scene.time.delayedCall(c.windupMs, () => {
         if (!this.active || this.dead) return; // destroy済みなら弾を出さない（this.scene消失対策）
         const py = high ? this.y - 30 : this.y + 20;
-        const proj = new Projectile(this.scene, this.x + dir * 30, py, c.proj || 'projCard', dir, high ? 'high' : 'low');
+        const proj = new Projectile(this.scene, this.x + dir * 30, py, c.proj || 'projCard', dir, high ? 'high' : 'low', { damage: c.projDamage });
         this.scene.projectiles.add(proj);
         this.scene.sfx?.('throw');
       });

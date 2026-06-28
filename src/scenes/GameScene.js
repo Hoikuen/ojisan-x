@@ -186,9 +186,11 @@ export class GameScene extends Phaser.Scene {
         const camRightNow = cam.scrollX + cam.width;
         const eventualScrollX = Phaser.Math.Clamp(this.player.x - cam.width / 2, 0, this.worldW - cam.width);
         const baseX = Math.max(camRightNow, eventualScrollX + cam.width) + 70;
+        const spawnMax = Math.min(bossRoomLeft - 60, this.worldW - 40);
         wave.enemies.forEach((e, j) => {
-          // 画面外の右端から登場（見えないところから歩いて入る）。ボス部屋手前でクランプ。
-          const sx = Math.min(baseX + j * 70, bossRoomLeft - 60, this.worldW - 40);
+          // 画面外の右端から登場（見えないところから歩いて入る）。
+          // ボス部屋手前クランプで sx がカメラ右端より左になる場合、カメラ右端+20 を下限に使う。
+          const sx = Math.max(Math.min(baseX + j * 70, spawnMax), camRightNow + 20);
           const en = new Enemy(this, sx, FLOOR_Y - 120, e.type);
           this.enemies.add(en);
           // 接地状態で出す（空中spawn→落下で「1段上に見える」のを防ぐ）
